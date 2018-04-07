@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="#fff"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/et_forget_infor"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:met_iconPadding="1dp"
+        app:met_primaryColor="#f66f14"
+        app:met_clearButton="true"
+        android:hint="@string/et_login_username_hint"/>
+    <Button
+        android:id="@+id/btn_for_next"
+        android:layout_marginTop="30dp"
+        android:background="#f66f14"
+        android:textColor="#fff"
+        android:text="@string/next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

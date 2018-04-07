@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:background="#fff"
+    android:layout_width="match_parent"
+    android:id="@+id/ll_login"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/iv_login"
+        android:src="@mipmap/iv_login"
+        android:layout_width="match_parent"
+        android:layout_height="100dp" />
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/et_login_username"
+        android:layout_marginTop="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:met_iconLeft="@mipmap/account"
+        app:met_iconPadding="1dp"
+        app:met_primaryColor="#f66f14"
+        app:met_clearButton="true"
+        android:hint="@string/et_login_username_hint"/>
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/et_login_password"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:met_iconLeft="@mipmap/password"
+        app:met_primaryColor="#f66f14"
+        android:inputType="textPassword"
+        app:met_iconPadding="1dp"
+        android:hint="@string/et_login_password_hint"/>
+    <Button
+        android:id="@+id/btn_login"
+        android:background="@drawable/button_bg"
+        android:textColor="#fff"
+        android:textSize="16sp"
+        android:text="@string/login"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:padding="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_rem_psd"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp"
+            android:text="@string/tv_login_rem_psd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_reg_usr"
+            android:layout_alignParentRight="true"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp"
+            android:text="@string/tv_login_reg_usr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+</LinearLayout>
