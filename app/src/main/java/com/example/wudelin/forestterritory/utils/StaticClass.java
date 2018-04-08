@@ -24,4 +24,6 @@ public class StaticClass {
     public static final String REG_API = ALY_IP+"/insertUserlf.do?uUsername=?&uPassword=?";
     //登录
     public static final String LOGIN_API = ALY_IP+"/selectUsernameIf.do?uUsername=?";
+    //历史图片
+    public static final String HIS_PICTURE_API = ALY_IP+"/getmsg.do";
 }
