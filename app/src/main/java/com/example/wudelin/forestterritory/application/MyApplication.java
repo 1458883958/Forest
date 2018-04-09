@@ -2,8 +2,6 @@ package com.example.wudelin.forestterritory.application;
 
 import android.app.Application;
 
-import com.bumptech.glide.annotation.GlideModule;
-import com.bumptech.glide.module.AppGlideModule;
 import com.example.wudelin.forestterritory.utils.StaticClass;
 import com.mob.MobSDK;
 import com.tencent.bugly.Bugly;
