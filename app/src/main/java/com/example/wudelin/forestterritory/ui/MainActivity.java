@@ -16,6 +16,9 @@ import com.example.wudelin.forestterritory.fragment.ButlerFragment;
 import com.example.wudelin.forestterritory.fragment.DealFragment;
 import com.example.wudelin.forestterritory.fragment.DeviceFragment;
 import com.example.wudelin.forestterritory.fragment.PictureFragment;
+import com.example.wudelin.forestterritory.utils.Logger;
+
+import org.opencv.android.OpenCVLoader;
 
 import java.util.ArrayList;
 import java.util.List;

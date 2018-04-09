@@ -3,6 +3,8 @@ package com.example.wudelin.forestterritory.application;
 import android.app.Application;
 
 import com.example.wudelin.forestterritory.utils.StaticClass;
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechUtility;
 import com.mob.MobSDK;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.crashreport.CrashReport;
@@ -34,5 +36,9 @@ public class MyApplication extends Application{
 
         //短信验证
         MobSDK.init(this);
+        //TTS语音听写
+        SpeechUtility
+                .createUtility(getApplicationContext(),
+                        SpeechConstant.APPID +"="+StaticClass.TTS_APP_ID);
     }
 }

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.example.wudelin.forestterritory.R;
 import com.example.wudelin.forestterritory.utils.Logger;
 import com.example.wudelin.forestterritory.utils.StaticClass;
+import com.example.wudelin.forestterritory.utils.ToastUtil;
 import com.kymjs.rxvolley.RxVolley;
 import com.kymjs.rxvolley.client.HttpCallback;
 import com.kymjs.rxvolley.http.VolleyError;
@@ -110,12 +111,22 @@ public class SafetyVerificationActivity extends BaseActivity implements View.OnC
 
     //注册
     private void startReg() {
-        RxVolley.get(StaticClass.REG_API, new HttpCallback() {
+        String url = StaticClass.ALY_IP
+                +"/insertUserIf.do?uUsername="+phoneNumber
+                +"&uPassword="+password;
+        RxVolley.get(url, new HttpCallback() {
             @Override
             public void onSuccess(String t) {
-                startActivity(new Intent(SafetyVerificationActivity.this,
-                        LoginActivity.class));
-                finish();
+                if(t.equals("success")) {
+                    startActivity(new Intent(SafetyVerificationActivity.this,
+                            LoginActivity.class));
+                    ToastUtil.showByStr(SafetyVerificationActivity.this,
+                            "注册成功");
+                    finish();
+                }else{
+                    ToastUtil.showByStr(SafetyVerificationActivity.this,
+                            "注册失败");
+                }
             }
 
             @Override

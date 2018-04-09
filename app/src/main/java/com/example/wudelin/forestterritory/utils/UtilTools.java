@@ -2,8 +2,10 @@ package com.example.wudelin.forestterritory.utils;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.view.View;
 import android.widget.TextView;
+
+import com.ndktools.javamd5.Mademd5;
+
 
 /**
  * 项目名：  ForestTerritory
@@ -21,5 +23,11 @@ public class UtilTools {
                 createFromAsset(mContent.getAssets(),"fonts/FONT.TTF");
         textView.setTypeface(fontType);
     }
-    //MD5加密
+
+    public static String EncoderByMd5(String str) {
+        Mademd5 md = new Mademd5();
+        String newstr = md.toMd5(str);
+        return newstr;
+    }
+
 }

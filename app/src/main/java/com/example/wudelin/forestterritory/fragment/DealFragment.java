@@ -3,11 +3,11 @@ package com.example.wudelin.forestterritory.fragment;
 import android.Manifest;
 import android.content.ContentUris;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,7 +29,13 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 
 import com.example.wudelin.forestterritory.R;
+import com.example.wudelin.forestterritory.utils.Logger;
 import com.example.wudelin.forestterritory.utils.ToastUtil;
+
+import org.opencv.android.OpenCVLoader;
+import org.opencv.android.Utils;
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -56,10 +62,21 @@ public class DealFragment extends Fragment implements View.OnClickListener {
     private static final int REQUEST_ALBUM = 11;
     private Uri imageUri;
     private PopupWindow popupWindow;
+    //判断是否从相册或者拍照获取到图片
+    private boolean flag = false;
+    static {
+            boolean load = OpenCVLoader.initDebug();
+            if(load) {
+                Logger.i( "Open CV Libraries loaded...");
+            }else{
+                Logger.i( "Open CV");
+            }
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_deal,null);
+
         findView(view);
         return view;
     }
@@ -82,9 +99,19 @@ public class DealFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.pic_gray:
                 //灰度化
+                if(flag){
+                    gray();
+                }else {
+                    ToastUtil.showByStr(getActivity(),"未选择图片！");
+                }
                 break;
             case R.id.pic_binaryzation:
                 //二值化
+                if(flag){
+                    changeBitmap();
+                }else {
+                    ToastUtil.showByStr(getActivity(),"未选择图片！");
+                }
                 break;
             case R.id.select_camera:
                 //拍照选取
@@ -103,6 +130,38 @@ public class DealFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+
+    //二值化
+/*
+        名称                  常量
+    二值阈值化       Imgproc.THRESH_BINARY
+    阈值化到零       Imgproc.THRESH_TOZERO
+    截断阈值化       Imgproc.THRESH_TRUNC
+    反转二值阈值化 Imgproc.THRESH_BINARY_INV
+    反转阈值化到零 Imgproc.THRESH_TOZERO_INV
+*/
+    public void changeBitmap() {
+        Bitmap bitmap = ((BitmapDrawable)ivAddPic.getDrawable()).getBitmap();
+        Mat rgbMat = new Mat();
+        Mat grayMat = new Mat();
+        Utils.bitmapToMat(bitmap,rgbMat);
+        Imgproc.threshold(rgbMat,grayMat,100,255,Imgproc.THRESH_BINARY);
+        Utils.matToBitmap(grayMat,bitmap);
+        ivAddPic.setImageBitmap(bitmap);
+    }
+    //灰度化
+    private void gray() {
+        Bitmap bitmap = ((BitmapDrawable)ivAddPic.getDrawable()).getBitmap();
+        Bitmap graybm = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Mat src = new Mat();
+        Mat dst = new Mat();
+        //获取lena彩色图像所对应的像素数据
+        Utils.bitmapToMat(bitmap,src);
+        //将彩色图像数据转换为灰度图像数据并存储到grayMat中
+        Imgproc.cvtColor(src,dst,Imgproc.COLOR_BGRA2GRAY);
+        Utils.matToBitmap(dst,graybm);
+        ivAddPic.setImageBitmap(graybm);
+    }
     private void toAlbum() {
         //设置action
         Intent intent = new Intent("android.intent.action.GET_CONTENT");
@@ -167,6 +226,7 @@ public class DealFragment extends Fragment implements View.OnClickListener {
                                 .decodeStream(getActivity().getContentResolver()
                                 .openInputStream(imageUri));
                         ivAddPic.setImageBitmap(bitmap);
+                        flag = true;
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -178,6 +238,7 @@ public class DealFragment extends Fragment implements View.OnClickListener {
                     }else{
                         handleImageBeforeKitKat(data);
                     }
+                    flag = true;
                     break;
                 default:
             }

@@ -5,14 +5,18 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.wudelin.forestterritory.R;
+import com.example.wudelin.forestterritory.utils.Logger;
 import com.example.wudelin.forestterritory.utils.ShareUtil;
 import com.example.wudelin.forestterritory.utils.StaticClass;
 import com.example.wudelin.forestterritory.utils.ToastUtil;
+import com.example.wudelin.forestterritory.utils.UtilTools;
+import com.example.wudelin.forestterritory.view.CustomDialog;
 import com.kymjs.rxvolley.RxVolley;
 import com.kymjs.rxvolley.client.HttpCallback;
 import com.kymjs.rxvolley.http.VolleyError;
@@ -34,6 +38,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button btnLogin;
     private TextView tvRemPsd;
     private TextView tvRegUsr;
+    //Dialog
+    private CustomDialog dialog;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +57,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         tvRemPsd.setOnClickListener(this);
         tvRegUsr = findViewById(R.id.tv_reg_usr);
         tvRegUsr.setOnClickListener(this);
+        dialog = new CustomDialog(this, 100, 100,
+                R.layout.dialog_loading, R.style.Theme_girl,
+                Gravity.CENTER,R.style.pop_anim_style);
+        //屏幕外点击无效
+        dialog.setCancelable(false);
     }
 
     @Override
@@ -58,10 +69,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch(v.getId()){
             //登录
             case R.id.btn_login:
-                //startLogin();
+
+                startLogin();
                 //调试
-                startActivity(new Intent(this,
-                        MainActivity.class));
+                //startActivity(new Intent(this,MainActivity.class));
                 break;
             //忘记密码
             case R.id.tv_rem_psd:
@@ -79,24 +90,41 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void startLogin() {
         final String username = etLoginUsername.getText().toString().trim();
-        String password = etLoginPassword.getText().toString().trim();
+        final String password = etLoginPassword.getText().toString().trim();
+        String url = StaticClass.ALY_IP
+                +"/selectUsernameIf.do?uUsername="+username;
+        Logger.e(url);
         if(!TextUtils.isEmpty(username)&&!TextUtils.isEmpty(password)){
-            RxVolley.get(StaticClass.LOGIN_API, new HttpCallback() {
+            dialog.show();
+            RxVolley.get(url, new HttpCallback() {
                 @Override
                 public void onSuccess(String t) {
-                    //成功
-                    startActivity(new Intent(LoginActivity.this,
-                            MainActivity.class));
-                    ShareUtil.putString(LoginActivity.this,
-                            StaticClass.USERNAME,username);
-                    finish();
+                    Logger.e(UtilTools.EncoderByMd5(password));
+                    if(!TextUtils.isEmpty(t)&&UtilTools.EncoderByMd5(password).equals(t)) {
+                        //成功
+                        startActivity(new Intent(LoginActivity.this,
+                                MainActivity.class));
+                        ShareUtil.putString(LoginActivity.this,
+                                StaticClass.USERNAME, username);
+                        finish();
+                    }else if (t.equals("nofind")){
+                        ToastUtil.showByStr(LoginActivity.this,
+                                "用户不存在");
+                    } else{
+                        //失败
+                        ToastUtil.showByStr(LoginActivity.this,
+                                "登录失败");
+                    }
+                    dialog.cancel();
                 }
 
                 @Override
                 public void onFailure(VolleyError error) {
                     //失败
                     ToastUtil.showByStr(LoginActivity.this,
-                            error.getMessage());
+                            error.toString());
+                    Logger.e(error.getMessage());
+                    dialog.cancel();
                 }
             });
         }

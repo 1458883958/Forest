@@ -21,9 +21,11 @@ public class StaticClass {
     //服务器ip
     public static final String ALY_IP = "http://www.xmhhs.top";
     //注册
-    public static final String REG_API = ALY_IP+"/insertUserlf.do?uUsername=?&uPassword=?";
+    public static final String REG_API = ALY_IP+"/insertUserIf.do?uUsername=?&uPassword=?";
     //登录
     public static final String LOGIN_API = ALY_IP+"/selectUsernameIf.do?uUsername=?";
     //历史图片
     public static final String HIS_PICTURE_API = ALY_IP+"/getmsg.do";
+    //TTS appid
+    public static final String TTS_APP_ID = "5acb1eb7";
 }
