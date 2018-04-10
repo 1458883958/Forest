@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+
 import com.example.wudelin.forestterritory.R;
 import com.example.wudelin.forestterritory.entity.VoiceBean;
 import com.example.wudelin.forestterritory.entity.WS;
@@ -37,6 +39,7 @@ import java.util.ArrayList;
 public class ButlerFragment extends Fragment{
     private Button btnTTS;
     private  StringBuffer strbuf;
+    private TextView tvTTs;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -46,6 +49,7 @@ public class ButlerFragment extends Fragment{
     }
 
     private void findView(View view) {
+        tvTTs = view.findViewById(R.id.tts_result);
         btnTTS = view.findViewById(R.id.btn_tts);
         btnTTS.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +86,7 @@ public class ButlerFragment extends Fragment{
 
                 String data = parseJson(result);
                 strbuf.append(data);
+                tvTTs.append(strbuf+"\n");
                 if(arg1){//回话结束
                     String voice = strbuf.toString();
                     Logger.e(voice);

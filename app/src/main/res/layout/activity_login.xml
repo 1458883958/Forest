@@ -64,5 +64,15 @@
             android:layout_height="wrap_content" />
 
     </RelativeLayout>
+    <Button
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textColor="#fff"
+        android:text="QQ登录"
+        android:id="@+id/btn_login_qq"
+        android:background="@drawable/button_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

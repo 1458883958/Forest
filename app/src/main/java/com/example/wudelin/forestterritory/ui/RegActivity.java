@@ -58,6 +58,7 @@ public class RegActivity extends BaseActivity implements View.OnClickListener {
             Intent intent = new Intent(this, SafetyVerificationActivity.class);
             intent.putExtra(SafetyVerificationActivity.PHONE_NUMBER,number);
             intent.putExtra(SafetyVerificationActivity.PASSWORD,password);
+            intent.putExtra("from","reg");
             startActivity(intent);
             finish();
         }else{

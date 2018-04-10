@@ -41,6 +41,8 @@ public class SafetyVerificationActivity extends BaseActivity implements View.OnC
     private String password;
     private Handler mHandler = new Handler();
     private int T = 60;
+    //标记是注册传来 的  还是忘记密码传来的
+    private int flag;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,9 +52,19 @@ public class SafetyVerificationActivity extends BaseActivity implements View.OnC
     }
 
     private void initView() {
+
         Intent intent = getIntent();
-        phoneNumber = intent.getStringExtra(PHONE_NUMBER);
-        password = intent.getStringExtra(PASSWORD);
+        String form = intent.getStringExtra("from");
+        if(form.equals("reg")){
+            flag = 1;
+            phoneNumber = intent.getStringExtra(PHONE_NUMBER);
+            password = intent.getStringExtra(PASSWORD);
+        }
+        if (form.equals("forget")){
+            flag = 2;
+            phoneNumber = intent.getStringExtra(PHONE_NUMBER);
+            password = "";
+        }
         sendCode("86",phoneNumber);
         tvSafeLable = findViewById(R.id.tv_safe_lable);
         btnNext = findViewById(R.id.btn_safe_next);
@@ -94,7 +106,10 @@ public class SafetyVerificationActivity extends BaseActivity implements View.OnC
                 if (result == SMSSDK.RESULT_COMPLETE) {
                     // TODO 处理验证成功的结果
                     Logger.d("afterEvent: "+"注册成功");
-                    startReg();
+                    if(flag==1)
+                        startReg();
+                    if(flag==2)
+                        startForget();
 
                 } else{
                     // TODO 处理错误的结果
@@ -107,6 +122,11 @@ public class SafetyVerificationActivity extends BaseActivity implements View.OnC
         });
         // 触发操作
         SMSSDK.submitVerificationCode(country, phone, code);
+    }
+
+    //修改密码
+    private void startForget() {
+        startActivity(new Intent(this,UpdatePsdActivity.class));
     }
 
     //注册
@@ -142,6 +162,7 @@ public class SafetyVerificationActivity extends BaseActivity implements View.OnC
         //用完回调要注销掉，否则可能会出现内存泄露
         SMSSDK.unregisterAllEventHandler();
     }
+
 
     @Override
     public void onClick(View v) {

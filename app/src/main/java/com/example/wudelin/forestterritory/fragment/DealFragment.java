@@ -24,6 +24,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -315,7 +316,16 @@ public class DealFragment extends Fragment implements View.OnClickListener {
                 .inflate(R.layout.popwindow_layout,null);
         popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT,true);
+        setBackgroundAlpha(0.5f);//设置屏幕透明度
+        popupWindow.setFocusable(true);// 点击空白处时，隐藏掉pop窗口
         popupWindow.setContentView(view);
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                // popupWindow隐藏时恢复屏幕正常透明度
+                setBackgroundAlpha(1.0f);
+            }
+        });
         //设置各个控件的点击响应
         Button btnSelectCamera = view.findViewById(R.id.select_camera);
         btnSelectCamera.setOnClickListener(this);
@@ -328,5 +338,17 @@ public class DealFragment extends Fragment implements View.OnClickListener {
                 .from(getActivity())
                 .inflate(R.layout.fragment_deal, null);
         popupWindow.showAtLocation(rootview, Gravity.BOTTOM, 0, 0);
+    }
+    /**
+     * 设置添加屏幕的背景透明度
+     *
+     * @param bgAlpha
+     *            屏幕透明度0.0-1.0 1表示完全不透明
+     */
+    public void setBackgroundAlpha(float bgAlpha) {
+        WindowManager.LayoutParams lp = getActivity().getWindow()
+                .getAttributes();
+        lp.alpha = bgAlpha;
+        getActivity().getWindow().setAttributes(lp);
     }
 }

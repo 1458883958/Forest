@@ -5,7 +5,17 @@ MobSDK {
     appKey "25116d1b7cc40"
     appSecret "24ac2d7ebbc78f811017991fc11637d2"
 
-    SMSSDK {}
+    SMSSDK {
+    }
+    ShareSDK {
+        //平台配置信息
+        devInfo {
+            QQ {
+                appId "1106756795"
+                appKey "2CzK1ExBGgyXeBHw"
+            }
+        }
+    }
 }
 android {
     compileSdkVersion 26
