@@ -10,6 +10,7 @@
 
     <com.rengwuxian.materialedittext.MaterialEditText
         android:id="@+id/et_reg_phone_number"
+        android:background="@drawable/edit_bg"
         android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,6 +25,7 @@
         android:layout_height="wrap_content"/>
     <com.rengwuxian.materialedittext.MaterialEditText
         android:id="@+id/et_reg_password"
+        android:background="@drawable/edit_bg"
         android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

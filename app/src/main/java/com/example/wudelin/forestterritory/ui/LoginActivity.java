@@ -147,7 +147,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         tvRegUsr = findViewById(R.id.tv_reg_usr);
         tvRegUsr.setOnClickListener(this);
         dialog = new CustomDialog(this, 100, 100,
-                R.layout.dialog_loading, R.style.Theme_girl,
+                R.layout.dialog_loading, R.style.Theme_dialog,
                 Gravity.CENTER, R.style.pop_anim_style);
         //屏幕外点击无效
         dialog.setCancelable(false);

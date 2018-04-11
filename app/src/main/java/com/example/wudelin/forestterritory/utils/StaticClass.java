@@ -28,4 +28,7 @@ public class StaticClass {
     public static final String HIS_PICTURE_API = ALY_IP+"/getmsg.do";
     //TTS appid
     public static final String TTS_APP_ID = "5acb1eb7";
+
+    //美女社区图片接口
+    public static final String GIRL_API = "http://gank.io/api/random/data/"+UtilTools.encode()+"/50";
 }

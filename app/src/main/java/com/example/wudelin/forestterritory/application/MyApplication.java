@@ -1,6 +1,7 @@
 package com.example.wudelin.forestterritory.application;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.example.wudelin.forestterritory.utils.StaticClass;
 import com.iflytek.cloud.SpeechConstant;
@@ -20,9 +21,11 @@ import com.tencent.bugly.crashreport.CrashReport;
 
 public class MyApplication extends Application{
 
+    public static Context context;
     @Override
     public void onCreate() {
         super.onCreate();
+        context = getBaseContext();
         //腾讯Bugly初始化
         /*
         * 第三个参数为SDK调试模式开关，调试模式的行为特性如下：

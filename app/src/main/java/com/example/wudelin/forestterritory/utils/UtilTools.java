@@ -4,7 +4,12 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.widget.TextView;
 
+import com.example.wudelin.forestterritory.R;
+import com.example.wudelin.forestterritory.application.MyApplication;
 import com.ndktools.javamd5.Mademd5;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 
 /**
@@ -24,10 +29,22 @@ public class UtilTools {
         textView.setTypeface(fontType);
     }
 
+    //MD5加密
     public static String EncoderByMd5(String str) {
         Mademd5 md = new Mademd5();
         String newstr = md.toMd5(str);
         return newstr;
+    }
+
+    //转码
+    public static String encode(){
+        String welfare = null;
+        try {
+            welfare = URLEncoder.encode(MyApplication.context.getString(R.string.welfare),"UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return welfare;
     }
 
 }
