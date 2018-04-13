@@ -48,7 +48,8 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
         viewHolder.scAction.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                ToastUtil.showByStr(parent.getContext(),""+isChecked);
+                ToastUtil.showByStr(parent.getContext(),
+                        ""+viewHolder.getAdapterPosition()+isChecked);
             }
         });
         return viewHolder;

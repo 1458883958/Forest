@@ -62,6 +62,8 @@
         <activity android:name=".ui.RegActivity" android:label="@string/register_an_account"/>
         <activity android:name=".ui.SettingActivity" android:label="@string/setting"/>
         <activity android:name=".ui.UpdatePsdActivity" android:label="@string/set_new_psd"/>
+        <activity android:name=".ui.InformationActivity" android:label="@string/perinfo"/>
+        <activity android:name=".ui.AboutActivity" android:label="@string/gy"/>
     </application>
 
 </manifest>

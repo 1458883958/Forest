@@ -10,12 +10,18 @@ package com.example.wudelin.forestterritory.utils;
 
 public class StaticClass {
 
+    //QQ登陆的头像URL
+    public static final String HEAD_URL = "head_url";
+    //判断App登陆状态,默认false
+    public static final String IS_LOGIN = "isLogin";
     //腾讯Bugly app id
     public static final String BUGLY_APP_ID = "61716089ed";
     //闪屏页延时
     public static final int SPLASH_DELAY = 1001;
     //用户名
     public static final String USERNAME = "username";
+    //密码
+    public static final String PASSWORD = "password";
     //判断程序是否第一次运行
     public static final String IS_RUNNING_FIRST = "isFirst";
     //服务器ip

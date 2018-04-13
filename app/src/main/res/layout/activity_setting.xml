@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f0f0f0"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/ll_personal_inf"
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:background="#fff">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_image"
+            android:layout_width="76dp"
+            android:layout_height="76dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="40dp"
+            android:src="@mipmap/ic_launcher_round"
+            app:civ_border_color="#fff"
+            app:civ_border_width="2dp" />
+
+        <TextView
+            android:id="@+id/tv_set_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="26dp"
+            android:layout_toRightOf="@+id/profile_image"
+             />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="26dp"
+            android:src="@mipmap/more" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:layout_marginTop="13dp"
+        android:background="#fff">
+
+        <ImageView
+            android:id="@+id/mydevice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="45dp"
+            android:src="@mipmap/device" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="26dp"
+            android:layout_toRightOf="@id/mydevice"
+            android:text="@string/device" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="26dp"
+            android:src="@mipmap/more" />
+    </RelativeLayout>
+
+    <LinearLayout
+        style="@style/common_horizontal_division_line_style" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:background="#fff">
+
+        <ImageView
+            android:id="@+id/data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="45dp"
+            android:src="@mipmap/integral" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="26dp"
+            android:layout_toRightOf="@id/data"
+            android:text="@string/his_data" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="26dp"
+            android:src="@mipmap/more" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_about_app"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:layout_marginTop="8dp"
+        android:background="#fff">
+
+        <ImageView
+            android:id="@+id/infor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="45dp"
+            android:src="@mipmap/information" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="26dp"
+            android:layout_toRightOf="@id/infor"
+            android:text="@string/gy" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="26dp"
+            android:src="@mipmap/more" />
+
+    </RelativeLayout>
+
+</LinearLayout>

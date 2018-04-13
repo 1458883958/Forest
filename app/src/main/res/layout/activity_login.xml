@@ -64,15 +64,61 @@
             android:layout_height="wrap_content" />
 
     </RelativeLayout>
-    <Button
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center"
+    <RelativeLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        <TextView
+            android:id="@+id/tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="15dp"
+            android:layout_marginLeft="5dip"
+            android:layout_marginRight="5dip"
+            android:text="无需注册直接登录"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#999" />
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="150dip"
+            android:layout_height="1dip"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/tv"
+            android:background="#999" />
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="150dip"
+            android:layout_height="1dip"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/tv"
+            android:background="#999" />
+    </RelativeLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:gravity="center"
-        android:textColor="#fff"
-        android:text="QQ登录"
-        android:id="@+id/btn_login_qq"
-        android:background="@drawable/button_bg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:src="@mipmap/qq"
+            android:background="#fff"
+            android:id="@+id/btn_login_qq"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+        <ImageButton
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:src="@mipmap/weixin"
+            android:background="#fff"
+            android:id="@+id/btn_login_weixin"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
 
 </LinearLayout>

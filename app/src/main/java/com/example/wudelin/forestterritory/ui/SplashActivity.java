@@ -7,9 +7,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.example.wudelin.forestterritory.R;
+import com.example.wudelin.forestterritory.utils.ShareUtil;
 import com.example.wudelin.forestterritory.utils.StaticClass;
 import com.example.wudelin.forestterritory.utils.UtilTools;
 
@@ -23,7 +25,6 @@ import com.example.wudelin.forestterritory.utils.UtilTools;
 
 public class SplashActivity extends AppCompatActivity{
     private TextView tvSplashText;
-
     /*
    * 1.延时2000
    * 2.自定义字体
@@ -36,8 +37,15 @@ public class SplashActivity extends AppCompatActivity{
             super.handleMessage(msg);
             switch (msg.what){
                 case StaticClass.SPLASH_DELAY:
-                    startActivity(new Intent(SplashActivity.this,
-                            LoginActivity.class));
+                    String name = ShareUtil.getString(SplashActivity.this,
+                            StaticClass.USERNAME,"");
+                    if(!TextUtils.isEmpty(name)) {
+                        startActivity(new Intent(SplashActivity.this,
+                                MainActivity.class));
+                    }else {
+                        startActivity(new Intent(SplashActivity.this,
+                                LoginActivity.class));
+                    }
                     finish();
                     break;
                 default:

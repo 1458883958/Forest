@@ -1,7 +1,10 @@
 package com.example.wudelin.forestterritory.utils;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.os.Environment;
 import android.widget.TextView;
 
 import com.example.wudelin.forestterritory.R;
@@ -45,6 +48,25 @@ public class UtilTools {
             e.printStackTrace();
         }
         return welfare;
+    }
+
+    //判断是否挂载SD卡
+    public static boolean sdCardExist() {
+        boolean sdCardExist = Environment.getExternalStorageState()
+                .equals(android.os.Environment.MEDIA_MOUNTED); //判断sd卡是否存在
+        return sdCardExist;
+    }
+
+    //获取系统版本
+    public static int getVersionCode(){
+        try {
+            PackageManager pm = MyApplication.context.getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(MyApplication.context.getPackageName(),0);
+            return pi.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
 }

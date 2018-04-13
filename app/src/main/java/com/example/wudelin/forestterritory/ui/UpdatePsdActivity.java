@@ -25,6 +25,7 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 public class UpdatePsdActivity extends BaseActivity implements View.OnClickListener {
     private MaterialEditText editText;
     private Button btnUpdNext;
+    private String phoneNumber;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +37,7 @@ public class UpdatePsdActivity extends BaseActivity implements View.OnClickListe
         editText = findViewById(R.id.et_update_psd);
         btnUpdNext = findViewById(R.id.btn_upd_next);
         btnUpdNext.setOnClickListener(this);
+        phoneNumber = getIntent().getStringExtra("username");
     }
 
     @Override
@@ -54,7 +56,8 @@ public class UpdatePsdActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void startUpdate(String password) {
-        String url = StaticClass.ALY_IP;
+        String url = StaticClass.ALY_IP+"/updatePassword.do?uUsername="+phoneNumber+
+                "&uPassword="+password;
         RxVolley.get(url, new HttpCallback() {
             @Override
             public void onSuccess(String t) {

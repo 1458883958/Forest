@@ -25,7 +25,7 @@ public class MyApplication extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
-        context = getBaseContext();
+        context = getApplicationContext();
         //腾讯Bugly初始化
         /*
         * 第三个参数为SDK调试模式开关，调试模式的行为特性如下：
@@ -43,5 +43,9 @@ public class MyApplication extends Application{
         SpeechUtility
                 .createUtility(getApplicationContext(),
                         SpeechConstant.APPID +"="+StaticClass.TTS_APP_ID);
+    }
+
+    public  Context getContext() {
+        return context;
     }
 }

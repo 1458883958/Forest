@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">ForestTerritory</string>
+    <string name="app_name">深临</string>
     <string name="tv_splash">深   临</string>
-    <string name="et_login_username_hint">手机号/邮箱</string>
+    <string name="et_login_username_hint">手机号</string>
     <string name="et_login_password_hint">密码</string>
     <string name="login">登录</string>
     <string name="tv_login_rem_psd">忘记密码</string>
@@ -28,4 +28,14 @@
     <string name="set_new_psd">设置新密码</string>
     <string name="submit">提交</string>
     <string name="welfare">福利</string>
+    <string name="gy">关于</string>
+    <string name="his_data">历史数据</string>
+    <string name="nname">昵称</string>
+    <string name="head_portrait">头像</string>
+    <string name="unbound">未绑定</string>
+    <string name="logout">退出登录</string>
+    <string name="perinfo">个人信息</string>
+    <string name="email">邮箱</string>
+    <string name="suggesstion">建议反馈</string>
+    <string name="checkversion">检查更新</string>
 </resources>

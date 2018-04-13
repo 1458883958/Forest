@@ -9,7 +9,10 @@ package com.example.wudelin.forestterritory.entity;
  */
 
 public class DeviceData {
+    //设备名称
     private String name;
+    //设备url
+    private String url;
 
     public String getName() {
         return name;

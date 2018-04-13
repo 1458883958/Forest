@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/ll_personal_select_head"
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:layout_marginTop="20dp"
+        android:background="#fff">
+        <TextView
+            android:id="@+id/tv_set_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="26dp"
+            android:text="@string/head_portrait" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/se_profile_image"
+            android:layout_width="76dp"
+            android:layout_height="76dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/more"
+            android:src="@mipmap/ic_launcher_round"
+            app:civ_border_color="#fff"
+            android:layout_marginRight="16dp"
+            app:civ_border_width="2dp" />
+        <ImageView
+            android:id="@+id/more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="26dp"
+            android:src="@mipmap/more" />
+    </RelativeLayout>
+    <LinearLayout
+        style="@style/common_horizontal_division_line_style" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:background="#fff">
+        <TextView
+            android:id="@+id/tv_set_nname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="26dp"
+            android:text="@string/nname" />
+        <TextView
+            android:id="@+id/tv_nn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/more1"
+            android:layout_marginRight="16dp"
+            />
+        <ImageView
+            android:id="@+id/more1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="26dp"
+            android:src="@mipmap/more" />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rl_bound_phone"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:layout_marginTop="3dp"
+        android:background="#fff">
+        <TextView
+            android:id="@+id/set_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="26dp"
+            android:text="@string/phone_number" />
+        <TextView
+            android:id="@+id/tv_set_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/more2"
+            android:layout_marginRight="16dp"
+            android:text="@string/unbound"
+            />
+        <ImageView
+            android:id="@+id/more2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="26dp"
+            android:src="@mipmap/more" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_bound_email"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:layout_marginTop="3dp"
+        android:background="#fff">
+        <TextView
+            android:id="@+id/set_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="26dp"
+            android:text="@string/email" />
+        <TextView
+            android:id="@+id/tv_set_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/more3"
+            android:layout_marginRight="16dp"
+            android:text="@string/unbound"
+            />
+        <ImageView
+            android:id="@+id/more3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="26dp"
+            android:src="@mipmap/more" />
+    </RelativeLayout>
+    <Button
+        android:textColor="@color/colorAccent"
+        android:text="@string/logout"
+        android:id="@+id/btn_logout"
+        android:layout_marginTop="20dp"
+        android:background="#fff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

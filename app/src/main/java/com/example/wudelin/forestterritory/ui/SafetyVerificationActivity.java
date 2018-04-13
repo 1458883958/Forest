@@ -126,7 +126,9 @@ public class SafetyVerificationActivity extends BaseActivity implements View.OnC
 
     //修改密码
     private void startForget() {
-        startActivity(new Intent(this,UpdatePsdActivity.class));
+        Intent intent = new Intent(this,UpdatePsdActivity.class);
+        intent.putExtra("username",phoneNumber);
+        startActivity(intent);
     }
 
     //注册

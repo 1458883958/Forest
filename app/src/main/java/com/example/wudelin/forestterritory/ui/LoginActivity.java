@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,7 +71,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextView tvRemPsd;
     private TextView tvRegUsr;
     //qq登录
-    private Button btnLoginQq;
+    private ImageButton btnLoginQq;
+    //微信登录
+    private ImageButton btnLoginWeixin;
     //Dialog
     private CustomDialog dialog;
 
@@ -95,7 +98,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Logger.e("userId: "+userId+"\n"+
                             "userName: "+userName+"\n"+ "userIcon: "+userIcon+"\n"+
                             "userGender: "+userGender);
-                    startReg(userId,userId);
+                    startReg(userId,userName,userIcon);
                     break;
                 case 2:
                     ToastUtil.showByStr(LoginActivity.this,
@@ -110,17 +113,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     };
 
-    private void startReg(final String userId, String userId1) {
+    private void startReg(final String userId,final String nname,final String userIcon) {
         String url = StaticClass.ALY_IP
                 +"/insertUserIf.do?uUsername="+userId
-                +"&uPassword="+userId1;
+                +"&uPassword="+userId;
         RxVolley.get(url, new HttpCallback() {
             @Override
             public void onSuccess(String t) {
                 startActivity(new Intent(LoginActivity.this,
                         MainActivity.class));
                 ShareUtil.putString(LoginActivity.this,StaticClass.USERNAME,
-                        userId);
+                        nname);
+                ShareUtil.putString(LoginActivity.this,StaticClass.HEAD_URL,
+                        userIcon);
                 finish();
             }
         });
@@ -278,5 +283,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         message.what = 3;
         message.obj = platform;
         mHanlder.sendMessage(message);
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
     }
 }
