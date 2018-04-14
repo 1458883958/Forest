@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="15dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/pi_name"
+            app:met_iconLeft="@mipmap/name"
+            app:met_primaryColor="#f66f14"
+            app:met_iconPadding="1dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:hint="@string/pi_name"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/pi_remark"
+            app:met_iconLeft="@mipmap/remarkofnursingwoker"
+            app:met_primaryColor="#f66f14"
+            app:met_iconPadding="1dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:hint="@string/pi_remark"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/pi_threshold"
+            app:met_iconLeft="@mipmap/thress"
+            app:met_primaryColor="#f66f14"
+            app:met_iconPadding="1dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:hint="@string/pi_threshold"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/pi_delaytime"
+            app:met_iconLeft="@mipmap/time"
+            app:met_primaryColor="#f66f14"
+            app:met_iconPadding="1dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:hint="@string/pi_delaytime"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/pi_ipaddress"
+            app:met_iconLeft="@mipmap/ip"
+            app:met_primaryColor="#f66f14"
+            app:met_iconPadding="1dp"
+            android:textColor="#f0f0f0"
+            android:clickable="false"
+            android:focusable="false"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:hint="@string/pi_ipaddress"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -9,10 +9,13 @@ import android.widget.TextView;
 
 import com.example.wudelin.forestterritory.R;
 import com.example.wudelin.forestterritory.application.MyApplication;
+import com.kymjs.rxvolley.client.HttpParams;
 import com.ndktools.javamd5.Mademd5;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -67,6 +70,11 @@ public class UtilTools {
             e.printStackTrace();
         }
         return 0;
+    }
+    //HttpParams
+    public HttpParams getParams(HashMap hashMap){
+        HttpParams params = new HttpParams();
+        return params;
     }
 
 }

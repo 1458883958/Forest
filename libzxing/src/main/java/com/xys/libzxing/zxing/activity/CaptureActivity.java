@@ -43,7 +43,6 @@ import com.xys.libzxing.zxing.utils.InactivityTimer;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-
 /**
  * This activity opens the camera and does the actual scanning on a background
  * thread. It draws a viewfinder to help the user place the barcode correctly,
@@ -185,11 +184,13 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
         inactivityTimer.onActivity();
         beepManager.playBeepSoundAndVibrate();
 
+        //跳转到确认绑定页面
         Intent resultIntent = new Intent();
         bundle.putInt("width", mCropRect.width());
         bundle.putInt("height", mCropRect.height());
         bundle.putString("result", rawResult.getText());
         resultIntent.putExtras(bundle);
+        //this.startActivity(resultIntent);
         this.setResult(RESULT_OK, resultIntent);
         CaptureActivity.this.finish();
     }

@@ -10,8 +10,10 @@ import android.widget.Button;
 import com.example.wudelin.forestterritory.R;
 import com.example.wudelin.forestterritory.utils.StaticClass;
 import com.example.wudelin.forestterritory.utils.ToastUtil;
+import com.example.wudelin.forestterritory.utils.UtilTools;
 import com.kymjs.rxvolley.RxVolley;
 import com.kymjs.rxvolley.client.HttpCallback;
+import com.kymjs.rxvolley.client.HttpParams;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 /**
@@ -56,9 +58,10 @@ public class UpdatePsdActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void startUpdate(String password) {
-        String url = StaticClass.ALY_IP+"/updatePassword.do?uUsername="+phoneNumber+
-                "&uPassword="+password;
-        RxVolley.get(url, new HttpCallback() {
+        HttpParams params = new HttpParams();
+        params.put("uUsername",phoneNumber);;
+        params.put("uPassword", UtilTools.EncoderByMd5(password));
+        RxVolley.get(StaticClass.PHONE_UPDATE_PSD,params,new HttpCallback() {
             @Override
             public void onSuccess(String t) {
                 if(t.equals("success")){
@@ -66,7 +69,7 @@ public class UpdatePsdActivity extends BaseActivity implements View.OnClickListe
                             LoginActivity.class));
                     finish();
                 }else{
-
+                    ToastUtil.showByStr(UpdatePsdActivity.this,"失败");
                 }
             }
         });

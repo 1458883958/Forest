@@ -27,9 +27,13 @@ public class StaticClass {
     //服务器ip
     public static final String ALY_IP = "http://www.xmhhs.top";
     //注册
-    public static final String REG_API = ALY_IP+"/insertUserIf.do?uUsername=?&uPassword=?";
+    public static final String REG_API = ALY_IP+"/insertUserIf.do";
     //登录
-    public static final String LOGIN_API = ALY_IP+"/selectUsernameIf.do?uUsername=?";
+    public static final String LOGIN_API = ALY_IP+"/selectUserIf.do";
+    //保存树莓派信息
+    public static final String SAVE_PI_API = ALY_IP+"/insertPiIf.do";
+    //根据手机号修改密码
+    public static final String PHONE_UPDATE_PSD = ALY_IP+"/updateByUsernameIf.do";
     //历史图片
     public static final String HIS_PICTURE_API = ALY_IP+"/getmsg.do";
     //TTS appid

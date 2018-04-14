@@ -38,4 +38,11 @@
     <string name="email">邮箱</string>
     <string name="suggesstion">建议反馈</string>
     <string name="checkversion">检查更新</string>
+    <string name="pi_name">设备名</string>
+    <string name="pi_remark">备注</string>
+    <string name="pi_threshold">阈值</string>
+    <string name="pi_delaytime">拍照间隔</string>
+    <string name="pi_switchstate">拍照运行状态</string>
+    <string name="pi_bootstate">设备运行状态</string>
+    <string name="pi_ipaddress">IP</string>
 </resources>

@@ -15,8 +15,10 @@ import com.example.wudelin.forestterritory.R;
 import com.example.wudelin.forestterritory.utils.Logger;
 import com.example.wudelin.forestterritory.utils.StaticClass;
 import com.example.wudelin.forestterritory.utils.ToastUtil;
+import com.example.wudelin.forestterritory.utils.UtilTools;
 import com.kymjs.rxvolley.RxVolley;
 import com.kymjs.rxvolley.client.HttpCallback;
+import com.kymjs.rxvolley.client.HttpParams;
 import com.kymjs.rxvolley.http.VolleyError;
 
 import cn.smssdk.EventHandler;
@@ -133,10 +135,11 @@ public class SafetyVerificationActivity extends BaseActivity implements View.OnC
 
     //注册
     private void startReg() {
-        String url = StaticClass.ALY_IP
-                +"/insertUserIf.do?uUsername="+phoneNumber
-                +"&uPassword="+password;
-        RxVolley.get(url, new HttpCallback() {
+        HttpParams params = new HttpParams();
+        params.put("uUsername",phoneNumber);
+        params.put("uPassword",UtilTools.EncoderByMd5(password));
+
+        RxVolley.get(StaticClass.REG_API, params,new HttpCallback() {
             @Override
             public void onSuccess(String t) {
                 if(t.equals("success")) {

@@ -64,6 +64,7 @@
         <activity android:name=".ui.UpdatePsdActivity" android:label="@string/set_new_psd"/>
         <activity android:name=".ui.InformationActivity" android:label="@string/perinfo"/>
         <activity android:name=".ui.AboutActivity" android:label="@string/gy"/>
+        <activity android:name=".ui.EditPiInfoActivity" android:label="确认信息"/>
     </application>
 
 </manifest>

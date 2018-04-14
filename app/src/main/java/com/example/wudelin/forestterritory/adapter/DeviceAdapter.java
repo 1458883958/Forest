@@ -17,6 +17,9 @@ import com.example.wudelin.forestterritory.utils.ToastUtil;
 
 import java.util.List;
 
+import static com.example.wudelin.forestterritory.adapter.DeviceAdapter.ViewName.ITEM;
+import static com.example.wudelin.forestterritory.adapter.DeviceAdapter.ViewName.SWITCH;
+
 /**
  * 项目名：  ForestTerritory
  * 包名：    com.example.wudelin.forestterritory.adapter
@@ -25,8 +28,19 @@ import java.util.List;
  * 描述：    设备设配器
  */
 
-public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder>{
+public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder> implements View.OnClickListener {
     private List<DeviceData> mList;
+    //声明
+    private OnRecyclerViewItemClickListener onRecyclerViewItemClickListener;
+
+    //设置get/set方法
+    public OnRecyclerViewItemClickListener getOnRecyclerViewItemClickListener() {
+        return onRecyclerViewItemClickListener;
+    }
+
+    public void setOnRecyclerViewItemClickListener(OnRecyclerViewItemClickListener onRecyclerViewItemClickListener) {
+        this.onRecyclerViewItemClickListener = onRecyclerViewItemClickListener;
+    }
 
     public DeviceAdapter(List<DeviceData> mList) {
         this.mList = mList;
@@ -37,21 +51,21 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
     public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         View view = LayoutInflater
                 .from(parent.getContext())
-                .inflate(R.layout.recycler_item,parent,false);
+                .inflate(R.layout.recycler_item, parent, false);
         final ViewHolder viewHolder = new ViewHolder(view);
-        viewHolder.ivSetting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ToastUtil.showByStr(parent.getContext(),"ivSetting");
-            }
-        });
-        viewHolder.scAction.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                ToastUtil.showByStr(parent.getContext(),
-                        ""+viewHolder.getAdapterPosition()+isChecked);
-            }
-        });
+//        viewHolder.ivSetting.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ToastUtil.showByStr(parent.getContext(),"ivSetting");
+//            }
+//        });
+//        viewHolder.scAction.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                ToastUtil.showByStr(parent.getContext(),
+//                        ""+viewHolder.getAdapterPosition()+isChecked);
+//            }
+//        });
         return viewHolder;
     }
 
@@ -59,7 +73,16 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         DeviceData data = mList.get(position);
-        holder.tvName.setText(data.getName());
+        holder.tvName.setText(data.getpName());
+        boolean flag = false;
+        if (data.getpSwitchstate().equals("off"))
+            flag = false;
+        else if (data.getpSwitchstate().equals("on"))
+            flag = true;
+        holder.scAction.setChecked(flag);
+        //设置tag
+        holder.scAction.setTag(position);
+        holder.cardView.setTag(position);
     }
 
     @Override
@@ -67,17 +90,44 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
         return mList.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public void onClick(View v) {
+        int position = (int) v.getTag();
+        if (onRecyclerViewItemClickListener != null) {
+            switch (v.getId()) {
+                case R.id.device_switch:
+                    onRecyclerViewItemClickListener.onClick(v, SWITCH, position);
+                    break;
+                case R.id.card_view:
+                    onRecyclerViewItemClickListener.onClick(v, ITEM, position);
+                    break;
+                default:
+            }
+        }
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvName;
-        ImageView ivSetting;
         SwitchCompat scAction;
         CardView cardView;
+
         public ViewHolder(View itemView) {
             super(itemView);
             cardView = (CardView) itemView;
             tvName = cardView.findViewById(R.id.device_name);
             scAction = cardView.findViewById(R.id.device_switch);
-            ivSetting = cardView.findViewById(R.id.device_setting);
+            //将创建的View注册点击事件
+            scAction.setOnClickListener(DeviceAdapter.this);
+            cardView.setOnClickListener(DeviceAdapter.this);
         }
+    }
+
+    public enum ViewName {
+        SWITCH, ITEM
+    }
+
+    //定义接口
+    public interface OnRecyclerViewItemClickListener {
+        void onClick(View view, ViewName viewName, int position);
     }
 }

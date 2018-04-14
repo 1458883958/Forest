@@ -2,6 +2,7 @@ package com.example.wudelin.forestterritory.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -25,8 +26,12 @@ import com.example.wudelin.forestterritory.utils.UtilTools;
 import com.example.wudelin.forestterritory.view.CustomDialog;
 import com.kymjs.rxvolley.RxVolley;
 import com.kymjs.rxvolley.client.HttpCallback;
+import com.kymjs.rxvolley.client.HttpParams;
 import com.kymjs.rxvolley.http.VolleyError;
 import com.rengwuxian.materialedittext.MaterialEditText;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 
@@ -113,6 +118,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     };
 
+    //QQ登录时保存信息
     private void startReg(final String userId,final String nname,final String userIcon) {
         String url = StaticClass.ALY_IP
                 +"/insertUserIf.do?uUsername="+userId
@@ -140,6 +146,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    //初始化
     private void initView() {
         etLoginUsername = findViewById(R.id.et_login_username);
         etLoginPassword = findViewById(R.id.et_login_password);
@@ -207,19 +214,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         qq.showUser(null);
     }
 
+    //登录
     private void startLogin() {
         final String username = etLoginUsername.getText().toString().trim();
         final String password = etLoginPassword.getText().toString().trim();
-        String url = StaticClass.ALY_IP
-                + "/selectUsernameIf.do?uUsername=" + username;
-        Logger.e(url);
+        //传账号密码
+        HttpParams params = new HttpParams();
+        params.put("uUsername",username);
+        params.put("uPassword",UtilTools.EncoderByMd5(password));
+
         if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
             dialog.show();
-            RxVolley.get(url, new HttpCallback() {
+            RxVolley.get(StaticClass.LOGIN_API, params,new HttpCallback() {
                 @Override
                 public void onSuccess(String t) {
-                    Logger.e(UtilTools.EncoderByMd5(password));
-                    if (!TextUtils.isEmpty(t) && UtilTools.EncoderByMd5(password).equals(t)) {
+                    //t为json，之后的查询根据uID查询
+                    if (!TextUtils.isEmpty(t)) {
                         try {
                             Thread.sleep(2000);
                         } catch (InterruptedException e) {
@@ -227,18 +237,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         }finally {
                             dialog.cancel();
                         }
+                        //解析json保存UID
+                        parseJson(t);
                         //成功
                         startActivity(new Intent(LoginActivity.this,
                                 MainActivity.class));
                         ShareUtil.putString(LoginActivity.this,
                                 StaticClass.USERNAME, username);
                         finish();
-                    } else if (t.equals("nofind")) {
-                        ToastUtil.showByStr(LoginActivity.this,
-                                "用户不存在");
-                        dialog.cancel();
-                    } else {
-                        //失败
+                    } else if (t.equals("fail")) {
                         ToastUtil.showByStr(LoginActivity.this,
                                 "登录失败");
                         dialog.cancel();
@@ -254,6 +261,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     dialog.cancel();
                 }
             });
+        }
+    }
+
+    private void parseJson(String t) {
+        try {
+            JSONObject jsonObject = new JSONObject(t);
+            String uId = jsonObject.getString("uId");
+            ShareUtil.putString(this,"uId",uId);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
