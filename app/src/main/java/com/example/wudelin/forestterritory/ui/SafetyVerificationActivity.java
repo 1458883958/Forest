@@ -115,8 +115,13 @@ public class SafetyVerificationActivity extends BaseActivity implements View.OnC
 
                 } else{
                     // TODO 处理错误的结果
-                    Toast.makeText(SafetyVerificationActivity.this,
-                            "验证码错误",Toast.LENGTH_SHORT).show();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(SafetyVerificationActivity.this,
+                                    "验证码错误",Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     Logger.d( "afterEvent: "+"注册失败");
                 }
 

@@ -34,11 +34,20 @@ public class StaticClass {
     public static final String SAVE_PI_API = ALY_IP+"/insertPiIf.do";
     //根据手机号修改密码
     public static final String PHONE_UPDATE_PSD = ALY_IP+"/updateByUsernameIf.do";
+    //根据ip查询已经绑定的树莓派设备
+    public static final String SELECT_RASP = ALY_IP+"/selectPiIf.do";
     //历史图片
-    public static final String HIS_PICTURE_API = ALY_IP+"/getmsg.do";
+    public static final String HIS_PICTURE_API = ALY_IP+"/getPhotoPathIf.do";
+    //控制树莓派开
+    public static final String ON_PI = ALY_IP+"/onPiIf.do";
+    //控制树莓派关
+    public static final String OFF_PI = ALY_IP+"/offPiIf.do";
     //TTS appid
     public static final String TTS_APP_ID = "5acb1eb7";
 
-    //美女社区图片接口
+    //树莓派列表
+    //http://xmhhs.top/piListIf.do?uId=44
+    public static final String LIST_PI = ALY_IP+"/piListIf.do";
+
     public static final String GIRL_API = "http://gank.io/api/random/data/"+UtilTools.encode()+"/50";
 }

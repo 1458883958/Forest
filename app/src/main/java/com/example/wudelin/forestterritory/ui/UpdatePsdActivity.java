@@ -57,6 +57,7 @@ public class UpdatePsdActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
+    //修改密码
     private void startUpdate(String password) {
         HttpParams params = new HttpParams();
         params.put("uUsername",phoneNumber);;

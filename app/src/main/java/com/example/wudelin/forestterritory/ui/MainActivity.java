@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.example.wudelin.forestterritory.R;
@@ -17,11 +18,27 @@ import com.example.wudelin.forestterritory.fragment.DealFragment;
 import com.example.wudelin.forestterritory.fragment.DeviceFragment;
 import com.example.wudelin.forestterritory.fragment.PictureFragment;
 import com.example.wudelin.forestterritory.utils.Logger;
+import com.example.wudelin.forestterritory.utils.ShareUtil;
+import com.example.wudelin.forestterritory.utils.StaticClass;
+import com.example.wudelin.forestterritory.utils.ToastUtil;
+import com.example.wudelin.forestterritory.utils.UtilTools;
+import com.kymjs.rxvolley.RxVolley;
+import com.kymjs.rxvolley.client.HttpCallback;
+import com.kymjs.rxvolley.client.HttpParams;
 
-import org.opencv.android.OpenCVLoader;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -38,10 +55,81 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getSupportActionBar().setElevation(0);
         //腾讯Bugly异常测试
         //CrashReport.testJavaCrash();
+        String uId = ShareUtil.getString(this,"uId","");
+        if(TextUtils.isEmpty(uId)){
+            getUserId();
+            Logger.e("QQ:"+uId);
+        }
         //初始化数据
         initData();
         initView();
     }
+
+    //获取Uid,保存账号UID
+    private void getUserId(){
+        String uUsername =
+                ShareUtil.getString(this,StaticClass.USERNAME,"");
+        Logger.e("uUsername:"+uUsername);
+        String url = StaticClass.LOGIN_API+"?uUsername="+uUsername+"&uPassword="+
+                UtilTools.EncoderByMd5("12345");
+        Logger.e("loginUrl:"+url);
+        getData(url);
+       // getData(url);
+        //传账号密码
+//        HttpParams params = new HttpParams();  params.put("uUsername",uUsername);
+//        params.put("uPassword",
+//                UtilTools.EncoderByMd5("12345"));
+//        Logger.e("uUsername:"+uUsername);
+//        RxVolley.get(StaticClass.LOGIN_API, params,new HttpCallback() {
+//            @Override
+//            public void onSuccess(String t) {
+//                //t为json，之后的查询根据uID查询
+//                Logger.e("jsonArray:"+t);
+//                if (!TextUtils.isEmpty(t)&&!t.equals("fail")) {
+//                    //解析json保存UID
+//                    parseJson(t);
+//                }
+//            }
+//        });
+    }
+    private void getData(String url) {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {//回调的方法执行在子线程。
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.body().string());
+                        String uId = jsonObject.getString("uId");
+                        Logger.e("okhttp:"+uId);
+                        ShareUtil.putString(MainActivity.this,"uId",uId);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+    /*private void parseJson(String t) {
+        try {
+            Logger.e("jsonArry:"+t);
+            JSONObject jsonObject = new JSONObject(t);
+            String uId = jsonObject.getString("uId");
+            Logger.e("aaaUid:"+uId);
+            String uUsername = jsonObject.getString("uUsername");
+            ShareUtil.putString(this,"uId",uId);
+            ShareUtil.putString(this,StaticClass.USERNAME,uUsername);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }*/
     //初始化数据
     private void initData() {
         titleList = new ArrayList<>();

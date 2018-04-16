@@ -15,6 +15,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,12 +32,14 @@ import com.example.wudelin.forestterritory.adapter.PictureAdapter;
 import com.example.wudelin.forestterritory.entity.Picture;
 import com.example.wudelin.forestterritory.utils.Logger;
 import com.example.wudelin.forestterritory.utils.PicassoUtil;
+import com.example.wudelin.forestterritory.utils.ShareUtil;
 import com.example.wudelin.forestterritory.utils.StaticClass;
 import com.example.wudelin.forestterritory.utils.ToastUtil;
 import com.example.wudelin.forestterritory.view.CustomDialog;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.kymjs.rxvolley.RxVolley;
 import com.kymjs.rxvolley.client.HttpCallback;
+import com.kymjs.rxvolley.client.HttpParams;
 import com.kymjs.rxvolley.client.ProgressListener;
 import com.kymjs.rxvolley.http.VolleyError;
 import com.kymjs.rxvolley.toolbox.FileUtils;
@@ -136,35 +139,7 @@ public class PictureFragment extends Fragment implements View.OnClickListener, V
         imageButton = dialog.findViewById(R.id.ib_download);
         imageButton.setOnClickListener(this);
         refreshLayout = view.findViewById(R.id.refresh);
-        refreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                refreshLayout.setRefreshing(true);
-            }
-        });
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                getPicture();
-                gridView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-                refreshLayout.setRefreshing(false);
-            }
-        },1500);
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        getPicture();
-                        gridView.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();
-                        refreshLayout.setRefreshing(false);
-                    }
-                },1500);
-            }
-        });
+
         photoView.setOnLongClickListener(this);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -177,21 +152,28 @@ public class PictureFragment extends Fragment implements View.OnClickListener, V
                 dialog.show();
             }
         });
+
         getPicture();
     }
 
     //获取图片
     private void getPicture() {
         mList.clear();
-        RxVolley.get(StaticClass.GIRL_API, new HttpCallback() {
+        HttpParams params = new HttpParams();
+
+        //params.put("pIpaddress", ShareUtil.getString(getActivity(),"pIpaddress",""));
+        params.put("pIpaddress","218.5.241.6");
+        RxVolley.get(StaticClass.HIS_PICTURE_API,params,new HttpCallback() {
             @Override
             public void onSuccess(String t) {
-                Logger.d(t);
-                //数据处理
-                //parseResponse(t);
+                Logger.d("pic"+t);
+                if(!TextUtils.isEmpty(t)) {
+                    //数据处理
+                    parseResponse(t);
+                }
                 
                 //测试
-                parseJson(t);
+                //parseJson(t);
                 
             }
             @Override
@@ -227,7 +209,7 @@ public class PictureFragment extends Fragment implements View.OnClickListener, V
         String sortT[] = new String[time.length];
         for(int i = 0;i<mUrl.length;i++){
             sortT[i] = time[i].replace(".jpg","");
-            mUrl[i] = StaticClass.ALY_IP+mUrl[i];
+            mUrl[i] = StaticClass.ALY_IP+"/photo/"+"218.5.241.6"+"/"+mUrl[i];
         }
         for (int i = 0; i < mUrl.length; i++) {
             Picture picture = new Picture(mUrl[i],sortT[i]);

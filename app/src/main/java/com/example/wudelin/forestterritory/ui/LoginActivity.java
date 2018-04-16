@@ -2,7 +2,6 @@ package com.example.wudelin.forestterritory.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -30,11 +29,11 @@ import com.kymjs.rxvolley.client.HttpParams;
 import com.kymjs.rxvolley.http.VolleyError;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
@@ -57,6 +56,7 @@ import cn.sharesdk.tencent.qq.QQ;
 *   对于ShareSDK来说，前者你的入口方法是showUser(null)，而后者是authorize()。
 *   那么下面我分情况解释两种接入方式的步骤。
 * */
+
 /**
  * ShareSDK第三方登录
  * 1.手动授权
@@ -87,10 +87,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
+            switch (msg.what) {
                 case 1:
                     Toast.makeText(LoginActivity.this
-                            ,"授权成功",Toast.LENGTH_SHORT).show();
+                            , "授权成功", Toast.LENGTH_SHORT).show();
                     Platform platform = (Platform) msg.obj;
                     //账号
                     String userId = platform.getDb().getUserId();
@@ -100,10 +100,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     String userIcon = platform.getDb().getUserIcon();
                     //性别
                     String userGender = platform.getDb().getUserGender();
-                    Logger.e("userId: "+userId+"\n"+
-                            "userName: "+userName+"\n"+ "userIcon: "+userIcon+"\n"+
-                            "userGender: "+userGender);
-                    startReg(userId,userName,userIcon);
+                    Logger.e("userId: " + userId + "\n" +
+                            "userName: " + userName + "\n" + "userIcon: " + userIcon + "\n" +
+                            "userGender: " + userGender);
+                    startReg(userId, userIcon);
                     break;
                 case 2:
                     ToastUtil.showByStr(LoginActivity.this,
@@ -119,18 +119,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     };
 
     //QQ登录时保存信息
-    private void startReg(final String userId,final String nname,final String userIcon) {
-        String url = StaticClass.ALY_IP
-                +"/insertUserIf.do?uUsername="+userId
-                +"&uPassword="+userId;
-        RxVolley.get(url, new HttpCallback() {
+    private void startReg(final String userId,final String userIcon) {
+        //传账号密码
+        HttpParams params = new HttpParams();
+        params.put("uUsername", userId);
+        params.put("uPassword", UtilTools.EncoderByMd5("12345"));
+        RxVolley.get(StaticClass.REG_API, params, new HttpCallback() {
             @Override
             public void onSuccess(String t) {
+                Logger.e("qReg:"+t);
                 startActivity(new Intent(LoginActivity.this,
                         MainActivity.class));
-                ShareUtil.putString(LoginActivity.this,StaticClass.USERNAME,
-                        nname);
-                ShareUtil.putString(LoginActivity.this,StaticClass.HEAD_URL,
+                ShareUtil.putString(LoginActivity.this, StaticClass.USERNAME,
+                        userId);
+                ShareUtil.putString(LoginActivity.this, StaticClass.PASSWORD,
+                        "12345");
+                ShareUtil.putString(LoginActivity.this, StaticClass.HEAD_URL,
                         userIcon);
                 finish();
             }
@@ -197,44 +201,48 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Platform qq = ShareSDK.getPlatform(QQ.NAME);
         qq.setPlatformActionListener(this);
         qq.SSOSetting(false);
-        if(!qq.isAuthValid()){
-            ToastUtil.showByStr(this,"请前往安装QQ");
+        if (!qq.isAuthValid()) {
+            ToastUtil.showByStr(this, "请前往安装QQ");
         }
         authorize(qq);
     }
 
     private void authorize(Platform qq) {
-        if(qq==null)
+        if (qq == null)
             return;
         //如果授权就删除授权资料
-        if(qq.isAuthValid()){
+        if (qq.isAuthValid()) {
             qq.removeAccount(true);
         }
         //授权并获取用户信息
         qq.showUser(null);
     }
 
-    //登录
+    //登录,成功保存账号，密码，UID
     private void startLogin() {
         final String username = etLoginUsername.getText().toString().trim();
         final String password = etLoginPassword.getText().toString().trim();
         //传账号密码
         HttpParams params = new HttpParams();
-        params.put("uUsername",username);
-        params.put("uPassword",UtilTools.EncoderByMd5(password));
-
+        params.put("uUsername", username);
+        params.put("uPassword", UtilTools.EncoderByMd5(password));
         if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
             dialog.show();
-            RxVolley.get(StaticClass.LOGIN_API, params,new HttpCallback() {
+            RxVolley.get(StaticClass.LOGIN_API, params, new HttpCallback() {
                 @Override
                 public void onSuccess(String t) {
                     //t为json，之后的查询根据uID查询
-                    if (!TextUtils.isEmpty(t)) {
+                    Logger.e("login:" + t);
+                    if (t.equals("fail")) {
+                        ToastUtil.showByStr(LoginActivity.this,
+                                "登录失败");
+                        dialog.cancel();
+                    } else {
                         try {
                             Thread.sleep(2000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
-                        }finally {
+                        } finally {
                             dialog.cancel();
                         }
                         //解析json保存UID
@@ -244,14 +252,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 MainActivity.class));
                         ShareUtil.putString(LoginActivity.this,
                                 StaticClass.USERNAME, username);
+                        ShareUtil.putString(LoginActivity.this,
+                                StaticClass.PASSWORD, UtilTools.EncoderByMd5(password));
                         finish();
-                    } else if (t.equals("fail")) {
-                        ToastUtil.showByStr(LoginActivity.this,
-                                "登录失败");
-                        dialog.cancel();
                     }
                 }
-
                 @Override
                 public void onFailure(VolleyError error) {
                     //失败
@@ -268,12 +273,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         try {
             JSONObject jsonObject = new JSONObject(t);
             String uId = jsonObject.getString("uId");
-            ShareUtil.putString(this,"uId",uId);
+            Logger.e("uId:"+uId);
+            ShareUtil.putString(LoginActivity.this, "uId", uId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-
 
     //授权成功回调
     @Override

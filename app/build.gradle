@@ -70,6 +70,7 @@ dependencies {
         exclude group: 'com.squareup.okhttp3', module: 'okhttp'
         exclude group: 'com.squareup.okio'
     }
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     //gson
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation project(':libzxing')
