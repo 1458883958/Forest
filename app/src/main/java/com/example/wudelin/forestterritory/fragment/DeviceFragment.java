@@ -14,11 +14,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -70,30 +72,34 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
     private static final int PERMISSION_REQUEST_CODE = 100;
     public String status = "off";
 
-//    @SuppressLint("HandlerLeak")
-//    private Handler mHandler = new Handler() {
-//        @Override
-//        public void handleMessage(Message msg) {
-//            super.handleMessage(msg);
-//            switch (msg.what) {
-//                case 10:
-//                    DeviceData data = (DeviceData) msg.obj;
-//                    Logger.d("" + data.getpName());
-//
-//                    break;
-//                default:
-//            }
-//        }
-//    };
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Logger.e("onResume");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Logger.e("onStart");
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden)
+            getForService();
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_device, null);
+
         findView(view);
         return view;
     }
-
 
     private void findView(View view) {
         btnAddDevice = view.findViewById(R.id.add_device);
@@ -105,7 +111,6 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
         recyclerView.setLayoutManager(layoutmanager);
         adapter = new DeviceAdapter(mList);
         recyclerView.setAdapter(adapter);
-        //获取网络绑定资源
         getForService();
         adapter.setOnRecyclerViewItemClickListener(new DeviceAdapter.OnRecyclerViewItemClickListener() {
             @Override
@@ -121,57 +126,63 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
                         } else {
                             url = StaticClass.OFF_PI;
                         }
-
-                        String pIpadress = ShareUtil.getString(getActivity(), "pIpaddress", "");
-                        String pId = ShareUtil.getString(getActivity(), "pId", "");
-                        Logger.e("pID:" + pId + "pIpaddress:" + pIpadress);
+                        DeviceData data = mList.get(position);
+                        Logger.e("pID:" + data.getpId() + "pIpaddress:" + data.getpIpaddress());
                         HttpParams params = new HttpParams();
-                        params.put("pId", pId);
-                        params.put("pIpaddress", pIpadress);
-                        url += "?pId=" + pId + "&pIpaddress=" + pIpadress;
+                        params.put("pId", data.getpId());
+                        params.put("pIpaddress", data.getpIpaddress());
+                        url += "?pId=" + data.getpId() + "&pIpaddress=" + data.getpIpaddress();
                         Logger.e("url:" + url);
                         getData(url);
-//                        final DeviceData data = mList.get(position);
-//                        SwitchCompat switchCompat = view.findViewById(R.id.device_switch);
-//                        boolean flag = switchCompat.isChecked()?true:false;
-//                        status = flag?"on":"off";
-//                        Logger.e(""+flag+"   "+status+"\n"+data.getpIpaddress());
-//                        data.setpSwitchstate(status);
-//                        //控制树莓派状态
-//                        new Thread(new Runnable(){
-//                            @Override
-//                            public void run() {
-//                                // TODO: http request.
-//                                Socket socket;
-//                                try {
-//                                    Logger.e(data.getpIpaddress()+"  ");
-//                                    socket = new Socket(data.getpIpaddress(), 17470);
-//                                    OutputStream ops = socket.getOutputStream();
-//                                    OutputStreamWriter opsw = new OutputStreamWriter(ops);
-//                                    BufferedWriter bw = new BufferedWriter(opsw);
-//                                    bw.write(status);
-//                                    bw.flush();
-//                                    socket.close();
-//                                } catch (UnknownHostException e) {
-//                                    // TODO 自动生成的 catch 块
-//                                    e.printStackTrace();
-//                                } catch (IOException e) {
-//                                    // TODO 自动生成的 catch 块
-//                                    e.printStackTrace();
-//                                }
-//                            }
-//                        }).start();
-//                        //每更改一次，更新一次服务器的pi状态
-
                         break;
                     case ITEM:
-                        Intent intent = new Intent(getActivity(),DetialDeviceActivity.class);
-                        final DeviceData data = mList.get(position);
-                        Bundle bundle = new Bundle();
-                        //bundle.putBundle();
-                        ToastUtil.showByStr(getActivity(), "我是item" + position);
+                        Intent intent = new Intent(getActivity(),
+                                DetialDeviceActivity.class);
+                        final DeviceData data1 = mList.get(position);
+                        intent.putExtra("pId",data1.getpId());
+                        intent.putExtra("pIpaddress",data1.getpIpaddress());
+                        startActivity(intent);
                         break;
                     default:
+                }
+            }
+
+            @Override
+            public void onItemLongOnClick(View view, int pos) {
+                showPopMenu(view,pos);
+            }
+        });
+
+    }
+
+    public void showPopMenu(View view,final int pos){
+        PopupMenu popupMenu = new PopupMenu(getActivity(),view);
+        popupMenu.getMenuInflater().inflate(R.menu.menu_item,popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                //删除网络存储
+                removeService(pos);
+                return false;
+            }
+        });
+        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+            @Override
+            public void onDismiss(PopupMenu menu) {
+            }
+        });
+        popupMenu.show();
+    }
+
+    private void removeService(final int pos) {
+        HttpParams params = new HttpParams();
+        params.put("pId",mList.get(pos).getpId());
+        RxVolley.post(StaticClass.DELETE_RASP, params, new HttpCallback() {
+            @Override
+            public void onSuccess(String t) {
+                if(!TextUtils.isEmpty(t)&&t.equals("success")){
+                    adapter.removeItem(pos);
+                }else{
+                    ToastUtil.showByStr(getActivity(),getString(R.string.unbind));
                 }
             }
         });
@@ -190,7 +201,7 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {//回调的方法执行在子线程。
-                    Logger.e("获取数据成功了");
+                    Logger.e(getString(R.string.get_data_success));
                     Logger.e(response.body().string());
                 }
             }
@@ -208,8 +219,9 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
             Logger.e("uid"+uId);
             HttpParams params = new HttpParams();
             params.put("uId", a);
+            //RxVolley.Builder builder = new RxVolley.Builder().shouldCache(false)
             //请求
-            RxVolley.get(StaticClass.LIST_PI, params, new HttpCallback() {
+            RxVolley.post(StaticClass.LIST_PI, params, new HttpCallback() {
                 @Override
                 public void onSuccess(String t) {
                     if (!TextUtils.isEmpty(t) && !t.equals("fail")) {
@@ -233,11 +245,13 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
 
     private void parseJson(String t) {
         try {
+            if(mList.size()>0)
+                mList.clear();
+            Logger.e("GET:"+t);
             JSONArray jsonArray = new JSONArray(t);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject object = jsonArray.getJSONObject(i);
                 DeviceData data = new DeviceData();
-                //ShareUtil.putString(getActivity(), "pId", object.getString("pId"));
                 data.setpIpaddress(object.getString("pIpaddress"));
                 data.setpName(object.getString("pName"));
                 data.setpRemark(object.getString("pRemark"));
@@ -245,9 +259,11 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
                 data.setpThreshold(Double.parseDouble(object.getString("pThreshold")));
                 data.setpSwitchstate(object.getString("pSwitchstate"));
                 data.setpBootsate(object.getString("pBootstate"));
+                Logger.e(""+object.getString("pId"));
+                data.setpId(object.getString("pId"));
                 mList.add(data);
             }
-            adapter.notifyItemInserted(mList.size());
+            adapter.notifyItemInserted(mList.size()-1);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -364,10 +380,10 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onSuccess(String t) {
                 if (t != null) {
-                    ShareUtil.putString(getActivity(), "pId", t);
+                    data.setpId(t);
                     ShareUtil.putString(getActivity(), "pIpaddress", data.getpIpaddress());
                     mList.add(data);
-                    adapter.notifyItemInserted(mList.size());
+                    adapter.notifyItemInserted(mList.size()-1);
                 } else {
                     ToastUtil.showByStr(getActivity(), "绑定失败");
                 }

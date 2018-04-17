@@ -129,7 +129,7 @@ public class ButlerFragment extends Fragment{
                     if(grantResults[0]==PackageManager.PERMISSION_GRANTED){
                             startSpeed();
                     }else {
-                        ToastUtil.showByStr(getActivity(),"无权限");
+                        ToastUtil.showByStr(getActivity(),getString(R.string.no_permission));
                     }
                     break;
                 default:

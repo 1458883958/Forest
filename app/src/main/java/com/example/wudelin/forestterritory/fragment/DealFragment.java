@@ -103,7 +103,7 @@ public class DealFragment extends Fragment implements View.OnClickListener {
                 if(flag){
                     gray();
                 }else {
-                    ToastUtil.showByStr(getActivity(),"未选择图片！");
+                    ToastUtil.showByStr(getActivity(),getString(R.string.no_select));
                 }
                 break;
             case R.id.pic_binaryzation:
@@ -111,7 +111,7 @@ public class DealFragment extends Fragment implements View.OnClickListener {
                 if(flag){
                     changeBitmap();
                 }else {
-                    ToastUtil.showByStr(getActivity(),"未选择图片！");
+                    ToastUtil.showByStr(getActivity(),getString(R.string.no_select));
                 }
                 break;
             case R.id.select_camera:
@@ -298,7 +298,7 @@ public class DealFragment extends Fragment implements View.OnClickListener {
             if(grantResults.length>0) {
                 for (int i = 0; i < grantResults.length; i++) {
                     if(grantResults[i]!=PackageManager.PERMISSION_GRANTED) {
-                        ToastUtil.showByStr(getActivity(),"权限未授予,不能正常工作");
+                        ToastUtil.showByStr(getActivity(),getString(R.string.no_permission));
                         return;
                     }
                 }

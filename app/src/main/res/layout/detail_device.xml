@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="15dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/pie_name"
+            app:met_iconLeft="@mipmap/name"
+            app:met_primaryColor="#f66f14"
+            app:met_iconPadding="1dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:hint="@string/pi_name"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/pie_remark"
+            app:met_iconLeft="@mipmap/remarkofnursingwoker"
+            app:met_primaryColor="#f66f14"
+            app:met_iconPadding="1dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:hint="@string/pi_remark"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/pie_threshold"
+            app:met_iconLeft="@mipmap/thress"
+            app:met_primaryColor="#f66f14"
+            app:met_iconPadding="1dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:hint="@string/pi_threshold"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/pie_delaytime"
+            app:met_iconLeft="@mipmap/time"
+            app:met_primaryColor="#f66f14"
+            app:met_iconPadding="1dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:hint="@string/pi_delaytime"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/pie_ipaddress"
+            app:met_iconLeft="@mipmap/ip"
+            app:met_primaryColor="#f66f14"
+            app:met_iconPadding="1dp"
+            android:textColor="#f0f0f0"
+            android:clickable="false"
+            android:focusable="false"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:hint="@string/pi_ipaddress"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/pie_bootstate"
+            app:met_iconLeft="@mipmap/boot"
+            app:met_primaryColor="#f66f14"
+            app:met_iconPadding="1dp"
+            android:textColor="#f0f0f0"
+            android:clickable="false"
+            android:focusable="false"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:hint="@string/pi_bootstate"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <Button
+        android:text="@string/look_pic"
+        android:background="@drawable/button_bg"
+        android:textSize="16sp"
+        android:textColor="#fff"
+        android:layout_marginTop="10dp"
+        android:padding="6dp"
+        android:id="@+id/btn_pic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_btn_setting"
+        android:textColor="#fff"
+        android:layout_marginTop="10dp"
+        android:padding="6dp"
+        android:gravity="center"
+        android:background="@drawable/button_bg"
+        android:textSize="16sp"
+        android:layout_gravity="center"
+        android:text="@string/setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btn_make_update"
+        android:textColor="#fff"
+        android:textSize="16sp"
+        android:text="@string/make_sure"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:background="@drawable/button_bg"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

@@ -1,4 +1,4 @@
-package com.example.wudelin.forestterritory.fragment;
+package com.example.wudelin.forestterritory.ui;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -12,27 +12,21 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-
-import com.bumptech.glide.Glide;
 import com.example.wudelin.forestterritory.R;
 import com.example.wudelin.forestterritory.adapter.PictureAdapter;
 import com.example.wudelin.forestterritory.entity.Picture;
 import com.example.wudelin.forestterritory.utils.Logger;
 import com.example.wudelin.forestterritory.utils.PicassoUtil;
-import com.example.wudelin.forestterritory.utils.ShareUtil;
 import com.example.wudelin.forestterritory.utils.StaticClass;
 import com.example.wudelin.forestterritory.utils.ToastUtil;
 import com.example.wudelin.forestterritory.view.CustomDialog;
@@ -42,8 +36,6 @@ import com.kymjs.rxvolley.client.HttpCallback;
 import com.kymjs.rxvolley.client.HttpParams;
 import com.kymjs.rxvolley.client.ProgressListener;
 import com.kymjs.rxvolley.http.VolleyError;
-import com.kymjs.rxvolley.toolbox.FileUtils;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,7 +53,7 @@ import java.util.List;
  * 描述：    历史图片
  */
 
-public class PictureFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener {
+public class PictureActivity extends BaseActivity implements View.OnClickListener, View.OnLongClickListener {
     //刷新
     private SwipeRefreshLayout refreshLayout;
     private GridView gridView;
@@ -79,6 +71,7 @@ public class PictureFragment extends Fragment implements View.OnClickListener, V
     //文件名
     private String fileName;
     private File file;
+    private String pIpaddress;
     //下载状态
     private static final int HANDLE_DOWNLOADING = 100;
     private static final int HANDLE_SUCCESS = 101;
@@ -98,7 +91,7 @@ public class PictureFragment extends Fragment implements View.OnClickListener, V
                     try {
                         MediaStore.
                                 Images.
-                                Media.insertImage(getActivity().getContentResolver(),
+                                Media.insertImage(PictureActivity.this.getContentResolver(),
                                 path, fileName, null);
                         //   /storage/emulated/0/Boohee/1493711988333.jpg
                     } catch (FileNotFoundException e) {
@@ -106,7 +99,7 @@ public class PictureFragment extends Fragment implements View.OnClickListener, V
                     }
 
                     // 第三步：最后通知图库更新
-                    getActivity()
+                    PictureActivity.this
                             .sendBroadcast(new Intent(
                                     Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
                                     Uri.parse("file://" + file)));
@@ -119,18 +112,19 @@ public class PictureFragment extends Fragment implements View.OnClickListener, V
             }
         }
     };
-    @Nullable
+
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_picture,null);
-        findView(view);
-        return view;
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_picture);
+        findView();
     }
 
-    private void findView(View view) {
-        gridView = view.findViewById(R.id.gv_picture);
+    private void findView( ) {
+        pIpaddress = getIntent().getStringExtra("pIpaddress");
+        gridView = findViewById(R.id.gv_picture);
         //初始化预览弹窗
-        dialog = new CustomDialog(getActivity(),
+        dialog = new CustomDialog(PictureActivity.this,
                 LinearLayout.LayoutParams.MATCH_PARENT
                 ,LinearLayout.LayoutParams.MATCH_PARENT,
                 R.layout.his_photo,R.style.Theme_dialog,
@@ -138,7 +132,7 @@ public class PictureFragment extends Fragment implements View.OnClickListener, V
         photoView = dialog.findViewById(R.id.photo_view);
         imageButton = dialog.findViewById(R.id.ib_download);
         imageButton.setOnClickListener(this);
-        refreshLayout = view.findViewById(R.id.refresh);
+        refreshLayout = findViewById(R.id.refresh);
 
         photoView.setOnLongClickListener(this);
 
@@ -146,7 +140,7 @@ public class PictureFragment extends Fragment implements View.OnClickListener, V
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //加载图片
-                PicassoUtil.loadDefault(getActivity(),
+                PicassoUtil.loadDefault(PictureActivity.this,
                         mList.get(position).getIvUrl(),photoView);
                 url = mList.get(position).getIvUrl();
                 dialog.show();
@@ -179,7 +173,7 @@ public class PictureFragment extends Fragment implements View.OnClickListener, V
             @Override
             public void onFailure(VolleyError error) {
                 Logger.d(error.getMessage());
-                ToastUtil.showByStr(getActivity(),""+error.getMessage());
+                ToastUtil.showByStr(PictureActivity.this,""+error.getMessage());
             }
         });
     }
@@ -194,7 +188,7 @@ public class PictureFragment extends Fragment implements View.OnClickListener, V
                 String url = json.getString("url");
                 Picture picture = new Picture(url,i+"");
                 mList.add(picture);
-                adapter = new PictureAdapter(mList,getActivity());
+                adapter = new PictureAdapter(mList,PictureActivity.this);
                 gridView.setAdapter(adapter);
             }
         } catch (JSONException e) {
@@ -204,6 +198,7 @@ public class PictureFragment extends Fragment implements View.OnClickListener, V
     }
 
     private void parseResponse(String t) {
+        //IP写死
         String mUrl[] = t.split(" ");
         String time[] = t.split(" ");
         String sortT[] = new String[time.length];
@@ -215,7 +210,7 @@ public class PictureFragment extends Fragment implements View.OnClickListener, V
             Picture picture = new Picture(mUrl[i],sortT[i]);
             mList.add(picture);
         }
-        adapter = new PictureAdapter(mList,getActivity());
+        adapter = new PictureAdapter(mList,PictureActivity.this);
         gridView.setAdapter(adapter);
     }
 
@@ -255,7 +250,7 @@ public class PictureFragment extends Fragment implements View.OnClickListener, V
     public boolean onLongClick(View v) {
         switch (v.getId()){
             case R.id.photo_view:
-                ToastUtil.showByStr(getActivity(),"长按下载");
+                ToastUtil.showByStr(PictureActivity.this,"长按下载");
                 check();
                 break;
             default:
@@ -264,10 +259,9 @@ public class PictureFragment extends Fragment implements View.OnClickListener, V
     }
     //权限检查
     private void check() {
-        if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)!=
+        if(ContextCompat.checkSelfPermission(PictureActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)!=
                 PackageManager.PERMISSION_GRANTED){
-            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    1);
+            ActivityCompat.requestPermissions(PictureActivity.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }else {
             downLoad();
         }
@@ -278,7 +272,7 @@ public class PictureFragment extends Fragment implements View.OnClickListener, V
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.ib_download:
-                ToastUtil.showByStr(getActivity(),url);
+                ToastUtil.showByStr(PictureActivity.this,url);
                 check();
                 break;
             default:
@@ -289,9 +283,10 @@ public class PictureFragment extends Fragment implements View.OnClickListener, V
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(grantResults.length>0&&grantResults[0]!=PackageManager.PERMISSION_GRANTED){
-            ToastUtil.showByStr(getActivity(),"无权限无法正常于使用");
+            ToastUtil.showByStr(PictureActivity.this,"无权限无法正常于使用");
         }else {
             downLoad();
         }
     }
+
 }

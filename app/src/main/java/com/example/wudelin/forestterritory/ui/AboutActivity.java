@@ -32,7 +32,7 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
         rlUpdate = findViewById(R.id.rl_update);
         rlUpdate.setOnClickListener(this);
         tvVersionCode = findViewById(R.id.tv_version_code);
-        tvVersionCode.setText("当前版本号:"+UtilTools.getVersionCode());
+        tvVersionCode.setText(getString(R.string.version)+UtilTools.getVersionCode());
     }
 
     @Override

@@ -46,4 +46,12 @@
     <string name="pi_bootstate">设备运行状态</string>
     <string name="pi_ipaddress">IP</string>
     <string name="device_inf">设备信息</string>
+    <string name="look_pic">查看历史图片</string>
+    <string name="make_sure">确认修改</string>
+    <string name="delete">解绑该设备</string>
+    <string name="no_permission">权限未授予,不能正常工作</string>
+    <string name="no_select">未选择图片！</string>
+    <string name="unbind">解绑失败</string>
+    <string name="version">当前版本号:</string>
+    <string name="get_data_success">获取数据成功了</string>
 </resources>

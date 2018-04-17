@@ -62,7 +62,7 @@ public class UpdatePsdActivity extends BaseActivity implements View.OnClickListe
         HttpParams params = new HttpParams();
         params.put("uUsername",phoneNumber);;
         params.put("uPassword", UtilTools.EncoderByMd5(password));
-        RxVolley.get(StaticClass.PHONE_UPDATE_PSD,params,new HttpCallback() {
+        RxVolley.post(StaticClass.PHONE_UPDATE_PSD,params,new HttpCallback() {
             @Override
             public void onSuccess(String t) {
                 if(t.equals("success")){

@@ -124,7 +124,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         HttpParams params = new HttpParams();
         params.put("uUsername", userId);
         params.put("uPassword", UtilTools.EncoderByMd5("12345"));
-        RxVolley.get(StaticClass.REG_API, params, new HttpCallback() {
+        RxVolley.post(StaticClass.REG_API, params, new HttpCallback() {
             @Override
             public void onSuccess(String t) {
                 Logger.e("qReg:"+t);
@@ -228,7 +228,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         params.put("uPassword", UtilTools.EncoderByMd5(password));
         if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
             dialog.show();
-            RxVolley.get(StaticClass.LOGIN_API, params, new HttpCallback() {
+            RxVolley.post(StaticClass.LOGIN_API, params, new HttpCallback() {
                 @Override
                 public void onSuccess(String t) {
                     //t为json，之后的查询根据uID查询

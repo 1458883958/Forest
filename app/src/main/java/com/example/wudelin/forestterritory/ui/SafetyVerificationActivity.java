@@ -144,7 +144,7 @@ public class SafetyVerificationActivity extends BaseActivity implements View.OnC
         params.put("uUsername",phoneNumber);
         params.put("uPassword",UtilTools.EncoderByMd5(password));
 
-        RxVolley.get(StaticClass.REG_API, params,new HttpCallback() {
+        RxVolley.post(StaticClass.REG_API, params,new HttpCallback() {
             @Override
             public void onSuccess(String t) {
                 if(t.equals("success")) {

@@ -36,12 +36,16 @@ public class StaticClass {
     public static final String PHONE_UPDATE_PSD = ALY_IP+"/updateByUsernameIf.do";
     //根据ip查询已经绑定的树莓派设备
     public static final String SELECT_RASP = ALY_IP+"/selectPiIf.do";
+    //根据pId解除已绑定的树莓派设备
+    public static final String DELETE_RASP = ALY_IP+"/deletePiIf.do";
     //历史图片
     public static final String HIS_PICTURE_API = ALY_IP+"/getPhotoPathIf.do";
     //控制树莓派开
     public static final String ON_PI = ALY_IP+"/onPiIf.do";
     //控制树莓派关
     public static final String OFF_PI = ALY_IP+"/offPiIf.do";
+    //修改树莓派信息
+    public static final String UPDATE_PI = ALY_IP+"/updatePiIf.do";
     //TTS appid
     public static final String TTS_APP_ID = "5acb1eb7";
 

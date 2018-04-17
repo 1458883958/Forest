@@ -16,17 +16,11 @@ import com.example.wudelin.forestterritory.R;
 import com.example.wudelin.forestterritory.fragment.ButlerFragment;
 import com.example.wudelin.forestterritory.fragment.DealFragment;
 import com.example.wudelin.forestterritory.fragment.DeviceFragment;
-import com.example.wudelin.forestterritory.fragment.PictureFragment;
 import com.example.wudelin.forestterritory.utils.Logger;
 import com.example.wudelin.forestterritory.utils.ShareUtil;
 import com.example.wudelin.forestterritory.utils.StaticClass;
-import com.example.wudelin.forestterritory.utils.ToastUtil;
 import com.example.wudelin.forestterritory.utils.UtilTools;
-import com.kymjs.rxvolley.RxVolley;
-import com.kymjs.rxvolley.client.HttpCallback;
-import com.kymjs.rxvolley.client.HttpParams;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -135,13 +129,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         titleList = new ArrayList<>();
         titleList.add(getString(R.string.device));
         titleList.add(getString(R.string.butler));
-        titleList.add(getString(R.string.picture));
         titleList.add(getString(R.string.deal));
 
         fragmentList = new ArrayList<>();
         fragmentList.add(new DeviceFragment());
         fragmentList.add(new ButlerFragment());
-        fragmentList.add(new PictureFragment());
         fragmentList.add(new DealFragment());
     }
 

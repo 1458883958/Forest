@@ -1,5 +1,8 @@
 package com.example.wudelin.forestterritory.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * 项目名：  ForestTerritory
  * 包名：    com.example.wudelin.forestterritory.entity
@@ -8,7 +11,19 @@ package com.example.wudelin.forestterritory.entity;
  * 描述：    设备实体类
  */
 
-public class DeviceData {
+public class DeviceData implements Parcelable {
+
+    //设备pId
+    private String pId;
+
+    public String getpId() {
+        return pId;
+    }
+
+    public void setpId(String pId) {
+        this.pId = pId;
+    }
+
     //设备名称
     private String pName;
     //设备ip
@@ -24,6 +39,8 @@ public class DeviceData {
     //是否开机
     private String pBootsate;
 
+    public DeviceData() { //构造
+    }
     public int getpDelayTime() {
         return pDelayTime;
     }
@@ -78,5 +95,42 @@ public class DeviceData {
 
     public void setpBootsate(String pBootsate) {
         this.pBootsate = pBootsate;
+    }
+
+    //必须实现的方法
+    public static final Creator<DeviceData> CREATOR = new Creator<DeviceData>() {
+        @Override
+        public DeviceData createFromParcel(Parcel in) {
+            DeviceData data = new DeviceData();
+            data.pName = in.readString();
+            data.pRemark = in.readString();
+            data.pIpaddress = in.readString();
+            data.pBootsate = in.readString();
+            data.pSwitchstate = in.readString();
+            data.pThreshold = in.readDouble();
+            data.pDelayTime = in.readInt();
+            return data;
+        }
+
+        @Override
+        public DeviceData[] newArray(int size) {
+            return new DeviceData[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {  //重写的方法
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(pName);
+        dest.writeString(pRemark);
+        dest.writeString(pIpaddress);
+        dest.writeString(pBootsate);
+        dest.writeString(pSwitchstate);
+        dest.writeDouble(pThreshold);
+        dest.writeInt(pDelayTime);
     }
 }
