@@ -30,6 +30,8 @@ public class StaticClass {
     public static final String REG_API = ALY_IP+"/insertUserIf.do";
     //登录
     public static final String LOGIN_API = ALY_IP+"/selectUserIf.do";
+    //根据uId更新用户资料
+    public static final String UPDATE_API = ALY_IP+"/updateUserIf.do";
     //保存树莓派信息
     public static final String SAVE_PI_API = ALY_IP+"/insertPiIf.do";
     //根据手机号修改密码

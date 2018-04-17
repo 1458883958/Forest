@@ -48,7 +48,7 @@ public class ForgetActivity extends BaseActivity implements View.OnClickListener
                     startActivity(intent);
                     finish();
                 }else{
-                    ToastUtil.showByStr(this,"请输入正确的手机号");
+                    ToastUtil.showById(this,R.string.valid_phone_number);
                 }
                 break;
             default:

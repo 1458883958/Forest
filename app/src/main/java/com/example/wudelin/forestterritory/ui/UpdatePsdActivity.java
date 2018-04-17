@@ -50,7 +50,7 @@ public class UpdatePsdActivity extends BaseActivity implements View.OnClickListe
                 if(!TextUtils.isEmpty(password)&&password.length()>6){
                     startUpdate(password);
                 }else{
-                    ToastUtil.showByStr(this,"密码不能为空，密码长度不足");
+                    ToastUtil.showById(this,R.string.length);
                 }
                 break;
             default:

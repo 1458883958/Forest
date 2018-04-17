@@ -283,7 +283,7 @@ public class PictureActivity extends BaseActivity implements View.OnClickListene
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(grantResults.length>0&&grantResults[0]!=PackageManager.PERMISSION_GRANTED){
-            ToastUtil.showByStr(PictureActivity.this,"无权限无法正常于使用");
+            ToastUtil.showByStr(PictureActivity.this,getString(R.string.no_permission));
         }else {
             downLoad();
         }

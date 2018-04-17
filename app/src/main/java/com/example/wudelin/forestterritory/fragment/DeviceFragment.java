@@ -77,6 +77,7 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
         Logger.e("onResume");
+        getForService();
     }
 
     @Override
@@ -229,9 +230,9 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
                         parseJson(t);
                     } else {
                         new AlertDialog.Builder(getActivity())
-                                .setTitle("注意")
-                                .setMessage("请检查是否绑定过设备")
-                                .setNegativeButton("确定", new DialogInterface.OnClickListener() {
+                                .setTitle(getString(R.string.note))
+                                .setMessage(getString(R.string.check_device_binding))
+                                .setNegativeButton(getString(R.string.sure), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
 
@@ -245,8 +246,10 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
 
     private void parseJson(String t) {
         try {
-            if(mList.size()>0)
+            if(mList.size()>0) {
                 mList.clear();
+                adapter.notifyDataSetChanged();
+            }
             Logger.e("GET:"+t);
             JSONArray jsonArray = new JSONArray(t);
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -318,9 +321,9 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
         MaterialEditText pIpaddress = view.findViewById(R.id.pi_ipaddress);
         pIpaddress.setText(scanResult);
         new AlertDialog.Builder(getActivity())
-                .setTitle("确认信息")
+                .setTitle(getString(R.string.confirmation_information))
                 .setView(view)
-                .setPositiveButton("绑定", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.binding), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         MaterialEditText pName = view.findViewById(R.id.pi_name);
@@ -355,7 +358,7 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
                         }
 
                     }
-                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //自动消失
@@ -385,7 +388,7 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
                     mList.add(data);
                     adapter.notifyItemInserted(mList.size()-1);
                 } else {
-                    ToastUtil.showByStr(getActivity(), "绑定失败");
+                    ToastUtil.showByStr(getActivity(), getString(R.string.binding_failed));
                 }
             }
 

@@ -123,7 +123,7 @@ public class DetialDeviceActivity extends BaseActivity implements View.OnClickLi
                         !TextUtils.isEmpty(pDelaytime)&&!TextUtils.isEmpty(pThreshold)){
                     updateData(pId,pName,pRemark,pDelaytime,pThreshold);
                 }else{
-                    ToastUtil.showByStr(this,"请检查内容");
+                    ToastUtil.showById(this,R.string.check_content);
                 }
                 break;
             case R.id.tv_btn_setting:
@@ -156,9 +156,9 @@ public class DetialDeviceActivity extends BaseActivity implements View.OnClickLi
                 if(t.equals("success")){
                     setFoucs(false);
                     btnUpdate.setVisibility(View.GONE);
-                    ToastUtil.showByStr(DetialDeviceActivity.this,"修改成功");
+                    ToastUtil.showById(DetialDeviceActivity.this,R.string.successfully_modified);
                 }else{
-                    ToastUtil.showByStr(DetialDeviceActivity.this,"修改失败");
+                    ToastUtil.showById(DetialDeviceActivity.this,R.string.fail_modified);
                 }
             }
         });

@@ -62,7 +62,7 @@ public class RegActivity extends BaseActivity implements View.OnClickListener {
             startActivity(intent);
             finish();
         }else{
-            Toast.makeText(this,"请输入正确的手机号码",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,getString(R.string.valid_phone_number),Toast.LENGTH_SHORT).show();
         }
     }
 }

@@ -142,7 +142,7 @@ public class SafetyVerificationActivity extends BaseActivity implements View.OnC
     private void startReg() {
         HttpParams params = new HttpParams();
         params.put("uUsername",phoneNumber);
-        params.put("uPassword",UtilTools.EncoderByMd5(password));
+        params.put("uPassword",password);
 
         RxVolley.post(StaticClass.REG_API, params,new HttpCallback() {
             @Override
@@ -151,11 +151,11 @@ public class SafetyVerificationActivity extends BaseActivity implements View.OnC
                     startActivity(new Intent(SafetyVerificationActivity.this,
                             LoginActivity.class));
                     ToastUtil.showByStr(SafetyVerificationActivity.this,
-                            "注册成功");
+                            getString(R.string.reg_success));
                     finish();
                 }else{
                     ToastUtil.showByStr(SafetyVerificationActivity.this,
-                            "注册失败");
+                            getString(R.string.reg_fail));
                 }
             }
 

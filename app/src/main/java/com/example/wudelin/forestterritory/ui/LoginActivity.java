@@ -33,11 +33,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.HashMap;
+
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.tencent.qq.QQ;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 /**
@@ -81,6 +88,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private ImageButton btnLoginWeixin;
     //Dialog
     private CustomDialog dialog;
+    private String image;
 
     @SuppressLint("HandlerLeak")
     private Handler mHanlder = new Handler() {
@@ -90,7 +98,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             switch (msg.what) {
                 case 1:
                     Toast.makeText(LoginActivity.this
-                            , "授权成功", Toast.LENGTH_SHORT).show();
+                            , getString(R.string.successfully_authorized), Toast.LENGTH_SHORT).show();
                     Platform platform = (Platform) msg.obj;
                     //账号
                     String userId = platform.getDb().getUserId();
@@ -103,15 +111,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Logger.e("userId: " + userId + "\n" +
                             "userName: " + userName + "\n" + "userIcon: " + userIcon + "\n" +
                             "userGender: " + userGender);
+                    image = userIcon;
                     startReg(userId, userIcon);
                     break;
                 case 2:
-                    ToastUtil.showByStr(LoginActivity.this,
-                            "授权失败");
+                    ToastUtil.showById(LoginActivity.this,
+                            R.string.authorization_failed);
                     break;
                 case 3:
-                    ToastUtil.showByStr(LoginActivity.this,
-                            "授权取消");
+                    ToastUtil.showById(LoginActivity.this,
+                            R.string.authorization_cancellation);
                     break;
                 default:
             }
@@ -119,24 +128,60 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     };
 
     //QQ登录时保存信息
-    private void startReg(final String userId,final String userIcon) {
+    private void startReg(final String userId, final String userIcon) {
         //传账号密码
+        //final String password = UtilTools.EncoderByMd5(userId);
         HttpParams params = new HttpParams();
         params.put("uUsername", userId);
-        params.put("uPassword", UtilTools.EncoderByMd5("12345"));
+        params.put("uPassword", userId);
         RxVolley.post(StaticClass.REG_API, params, new HttpCallback() {
             @Override
             public void onSuccess(String t) {
-                Logger.e("qReg:"+t);
-                startActivity(new Intent(LoginActivity.this,
-                        MainActivity.class));
-                ShareUtil.putString(LoginActivity.this, StaticClass.USERNAME,
-                        userId);
-                ShareUtil.putString(LoginActivity.this, StaticClass.PASSWORD,
-                        "12345");
-                ShareUtil.putString(LoginActivity.this, StaticClass.HEAD_URL,
-                        userIcon);
-                finish();
+                String uId = ShareUtil.getString(LoginActivity.this,
+                        "uId", "");
+                Logger.e("qReg:" + t);
+                //ShareUtil.putString(LoginActivity.this,StaticClass.HEAD_URL,userIcon);
+                if (TextUtils.isEmpty(uId)) {
+                    getUid(userId, userId);
+                } else {
+                    change();
+                }
+            }
+        });
+
+    }
+
+    private void change() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void getUid(final String userId, final String password) {
+        String newpassword = UtilTools.EncoderByMd5(password);
+        HttpParams params = new HttpParams();
+        params.put("uUsername",userId);
+        params.put("uPassword",newpassword);
+        RxVolley.post(StaticClass.LOGIN_API, params, new HttpCallback() {
+            @Override
+            public void onSuccess(String t) {
+                if(!TextUtils.isEmpty(t)&&!t.equals("fail"))
+                try {
+                    JSONObject jsonObject = new JSONObject(t);
+                    String uId = jsonObject.getString("uId");
+                    Logger.e("okhttp:" + uId);
+                    ShareUtil.putString(LoginActivity.this,
+                            "uId", uId);
+                    ShareUtil.putString(LoginActivity.this,
+                            StaticClass.USERNAME, userId);
+                    ShareUtil.putString(LoginActivity.this,
+                            StaticClass.PASSWORD, userId);
+                    ShareUtil.putString(LoginActivity.this,
+                            StaticClass.HEAD_URL,image);
+                    change();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -202,7 +247,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         qq.setPlatformActionListener(this);
         qq.SSOSetting(false);
         if (!qq.isAuthValid()) {
-            ToastUtil.showByStr(this, "请前往安装QQ");
+            ToastUtil.showById(this, R.string.start_qq);
         }
         authorize(qq);
     }
@@ -234,8 +279,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     //t为json，之后的查询根据uID查询
                     Logger.e("login:" + t);
                     if (t.equals("fail")) {
-                        ToastUtil.showByStr(LoginActivity.this,
-                                "登录失败");
+                        ToastUtil.showById(LoginActivity.this,
+                                R.string.error);
                         dialog.cancel();
                     } else {
                         try {
@@ -253,10 +298,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         ShareUtil.putString(LoginActivity.this,
                                 StaticClass.USERNAME, username);
                         ShareUtil.putString(LoginActivity.this,
-                                StaticClass.PASSWORD, UtilTools.EncoderByMd5(password));
+                                StaticClass.PASSWORD, password);
                         finish();
                     }
                 }
+
                 @Override
                 public void onFailure(VolleyError error) {
                     //失败
@@ -273,7 +319,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         try {
             JSONObject jsonObject = new JSONObject(t);
             String uId = jsonObject.getString("uId");
-            Logger.e("uId:"+uId);
+            Logger.e("uId:" + uId);
             ShareUtil.putString(LoginActivity.this, "uId", uId);
         } catch (JSONException e) {
             e.printStackTrace();

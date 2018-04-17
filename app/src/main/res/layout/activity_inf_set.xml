@@ -39,6 +39,7 @@
     <LinearLayout
         style="@style/common_horizontal_division_line_style" />
     <RelativeLayout
+        android:id="@+id/ll_personal_update_nn"
         android:layout_width="match_parent"
         android:layout_height="43dp"
         android:background="#fff">
